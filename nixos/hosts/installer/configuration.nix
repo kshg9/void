@@ -83,10 +83,10 @@
           target=''${1:-uriel}
           username=''${2:-kdj}
 
-          sudo disko --mode destroy,format,mount --flake "github:kshg9/flakes#$target"
+          sudo disko --mode destroy,format,mount --flake "github:kshg9/void#$target"
 
           sudo mkdir -p /mnt/persist/system/etc/nixos
-          sudo git clone https://github.com/kshg9/void /mnt/persist/system/etc/nixos/flakes
+          sudo git clone https://github.com/kshg9/void /mnt/persist/system/etc/nixos/void
 
           sudo nixos-install --no-root-passwd --flake /mnt/persist/system/etc/nixos/void#"$target"
 

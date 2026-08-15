@@ -75,7 +75,7 @@
             impure = {
               enable = true;
               dotsDir = "${./dots}";
-              dotsDirImpure = "/home/kdj/reflake/nixos/modules/user/dots";
+              dotsDirImpure = "/home/kdj/void/nixos/modules/user/dots";
               parseAttrs = [
                 config.hjem.users.${name}.files
                 config.hjem.users.${name}.xdg.config.files
