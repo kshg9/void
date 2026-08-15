@@ -1,0 +1,34 @@
+[user]
+	name = kdj
+	email = kshg9+vcs@proton.me
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+
+[push]
+	autoSetupRemote = true
+
+[includeIf "hasconfig:remote.*.url:*github.com*"]
+	path = ~/.config/git/config.github
+
+[includeIf "hasconfig:remote.*.url:*codeberg.org*"]
+[includeIf "hasconfig:remote.*.url:*tangled.sh*"]
+	path = ~/.config/git/config.vcs
+
+[diff]
+	tool = difftastic
+
+[difftool]
+	prompt = false
+
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+	difftool = true
+
+[alias]
+	d = difftool

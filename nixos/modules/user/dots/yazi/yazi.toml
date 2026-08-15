@@ -1,0 +1,4 @@
+[mgr]
+linemode = "size"
+sort-by = "alphabetical"
+sort-dir-first = true
