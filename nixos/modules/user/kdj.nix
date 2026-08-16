@@ -12,7 +12,6 @@
       imports = [
         (self.userBase user)
         self.nixosModules.llm-agents
-        self.nixosModules.firefox
       ];
 
       users.users.${user} = {
@@ -35,17 +34,15 @@
         ];
 
         packages = with pkgs; [
-          # chromium
           #obsidian
           #anki-bin
-          #qbittorrent
-          #vesktop
+          qbittorrent
+          vesktop
           rclone
-          # (use tldeer if in unstable or use tealdeer)
+          gh
           tealdeer
 
           # dev tools specific to this founder
-          #emacs-pgtk
           helix
           tmux
           zk

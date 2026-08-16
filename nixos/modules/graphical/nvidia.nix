@@ -3,18 +3,10 @@
     {
       config,
       lib,
-      pkgs,
       ...
     }:
     lib.mkIf config.extras.nvidia.enable {
       services.xserver.videoDrivers = [ "nvidia" ];
-
-      boot.initrd.kernelModules = [
-        "nvidia"
-        "nvidia_modeset"
-        "nvidia_drm"
-        "nvidia_uvm"
-      ];
 
       nixpkgs.config.cudaSupport = true;
 
@@ -22,12 +14,20 @@
         open = false;
         modesetting.enable = true;
 
-        powerManagement = {
-          enable = true;
-          finegrained = false;
+        prime = {
+          offload = {
+            enable = true;
+            enableOffloadCmd = true;
+          };
+          nvidiaBusId = "PCI:1:0:0";
+          amdgpuBusId = "PCI:5:0:0";
         };
 
-        nvidiaPersistenced = true;
+        powerManagement = {
+          enable = true;
+          finegrained = true;
+        };
+
         nvidiaSettings = true;
         package = config.boot.kernelPackages.nvidiaPackages.stable;
       };
@@ -35,20 +35,6 @@
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
-        extraPackages = with pkgs; [
-          nvidia-vaapi-driver
-          libva-vdpau-driver
-        ];
-        extraPackages32 = with pkgs; [
-          driversi686Linux.libva-vdpau-driver
-        ];
-      };
-
-      environment.variables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        NVD_BACKEND = "direct";
       };
     };
 }

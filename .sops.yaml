@@ -1,6 +1,6 @@
 keys:
   - &kdj "age1qqjvgyqn82wkrx66twl9nlc7sq2nh2sdjnhmdd7k22avprhy0e3ql6mgns"
-  - &uriel "age10ffnxp9fu6jfv5qhgl86q7yc3jdhnr8u4d83yxkkrrck4g5z5ezq5e2xlr"
+  - &uriel "age1qte8zyv59hmmc3vqvstn5jlx7rfhfudfdmq9dd208qsdnxgufcuqefdfuj"
 creation_rules:
   - path_regex: secrets/uriel\.yaml$
     key_groups:

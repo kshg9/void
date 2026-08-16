@@ -30,6 +30,7 @@
         self.nixosModules.tailscale
         self.nixosModules.docker
         self.nixosModules.qemu
+        self.nixosModules.firefox
 
         # Per-user Hjem profile.
         self.nixosModules.userKdj
@@ -40,8 +41,11 @@
       ];
 
       extras = {
-        waydroid.enable = false;
         lanzaboote.enable = true;
+        vicinae.enable = true;
+        nvidia.enable = true;
+        chrome.enable = true;
+        emacs.enable = true;
       };
 
       desktop.configNiri.enable = true;

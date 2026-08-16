@@ -37,51 +37,29 @@
       hjem = {
         clobberByDefault = true;
 
-        users.${name} =
-          let
-            findIcon =
-              u:
-              let
-                jpg = ../../../assets + "/${u}.jpg";
-                png = ../../../assets + "/${u}.png";
-              in
-              if builtins.pathExists jpg then
-                jpg
-              else if builtins.pathExists png then
-                png
-              else
-                null;
-            userIcon = findIcon name;
-          in
-          {
-            imports = [
-              self.hjemModules.terminal
-            ];
+        users.${name} = {
+          imports = [
+            self.hjemModules.terminal
+          ];
 
+          enable = true;
+          user = name;
+          directory = "/home/${name}";
+
+          files = self.lib.mkDots { dir = ./home; };
+
+          xdg.config.files = self.lib.mkDots { dir = ./dots; };
+
+          impure = {
             enable = true;
-            user = name;
-            directory = "/home/${name}";
-
-            files = lib.mkMerge [
-              {
-                ".face".source = lib.mkIf (userIcon != null) userIcon;
-                ".face.icon".source = lib.mkIf (userIcon != null) userIcon;
-              }
-              (self.lib.mkDots { dir = ./home; })
+            dotsDir = "${./dots}";
+            dotsDirImpure = "/etc/nixos/void/nixos/modules/user/dots";
+            parseAttrs = [
+              config.hjem.users.${name}.files
+              config.hjem.users.${name}.xdg.config.files
             ];
-
-            xdg.config.files = self.lib.mkDots { dir = ./dots; };
-
-            impure = {
-              enable = true;
-              dotsDir = "${./dots}";
-              dotsDirImpure = "/home/kdj/void/nixos/modules/user/dots";
-              parseAttrs = [
-                config.hjem.users.${name}.files
-                config.hjem.users.${name}.xdg.config.files
-              ];
-            };
           };
+        };
       };
     };
 }

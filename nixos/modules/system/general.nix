@@ -50,6 +50,15 @@
       services.upower.enable = true;
       security.polkit.enable = true;
 
+      services.tlp = {
+        enable = true;
+        settings = {
+          # 1 -> caps at 60%, 0 -> 100%
+          START_CHARGE_THRESH_BAT0 = "0";
+          STOP_CHARGE_THRESH_BAT0 = "1";
+        };
+      };
+
       hardware = {
         enableAllFirmware = true;
         bluetooth.enable = true;

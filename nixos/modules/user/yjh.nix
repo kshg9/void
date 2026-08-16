@@ -12,7 +12,9 @@
       user = "yjh";
     in
     {
-      imports = [ (self.userBase user) ];
+      imports = [
+        (self.userBase user)
+      ];
 
       users.users.${user} = {
         extraGroups = [
@@ -26,7 +28,7 @@
       };
 
       hjem.users.${user}.packages = with pkgs; [
-        firefox
+        mpv
       ];
 
     };
