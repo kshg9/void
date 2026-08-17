@@ -46,7 +46,7 @@
         enable = true;
         extraArgs = "--keep 10 --keep-since 3d";
       };
-      flake = "/home/kdj/flakes";
+      flake = "/etc/nixos/void";
     };
   };
 }

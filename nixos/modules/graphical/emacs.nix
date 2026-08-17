@@ -9,7 +9,7 @@
     lib.mkIf config.extras.emacs.enable {
       services.emacs = {
         enable = true;
-        package = pkgs.emacs-pgtk;
+        package = pkgs.emacs;
         defaultEditor = false;
       };
     };

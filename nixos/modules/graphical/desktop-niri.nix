@@ -3,10 +3,12 @@
     {
       config,
       lib,
+      pkgs,
       ...
     }:
     lib.mkIf config.desktop.configNiri.enable {
       programs.niri.enable = true;
+      environment.systemPackages = [ pkgs.xwayland-satellite ];
 
       hjem.extraModules = [
         (
@@ -37,8 +39,7 @@
                 };
                 theme = {
                   mode = "dark";
-                  source = "builtin";
-                  builtin = "Catppuccin";
+                  source = "wallpaper";
                 };
                 accessibility = {
                   ui_scale = 1.1;
