@@ -23,6 +23,7 @@
     {
       imports = [
         self.nixosModules.nixpkgsConfig
+        self.nixosModules.cachix
 
         "${modulesPath}/installer/cd-dvd/installation-cd-graphical-base.nix"
       ];
@@ -66,6 +67,8 @@
           "pipe-operators"
         ];
         show-trace = true;
+        fallback = false;
+        max-jobs = 0;
       };
 
       environment.systemPackages = [

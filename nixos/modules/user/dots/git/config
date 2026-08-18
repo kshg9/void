@@ -11,8 +11,11 @@
 [push]
 	autoSetupRemote = true
 
-[includeIf "hasconfig:remote.*.url:*github.com*"]
-	path = ~/.config/git/config.github
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+		path = ~/.config/git/config.github
+
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+		path = ~/.config/git/config.github
 
 [includeIf "hasconfig:remote.*.url:*codeberg.org*"]
 [includeIf "hasconfig:remote.*.url:*tangled.sh*"]
@@ -32,3 +35,9 @@
 
 [alias]
 	d = difftool
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
