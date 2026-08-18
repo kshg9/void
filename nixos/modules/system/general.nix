@@ -15,13 +15,11 @@
         inputs.noctalia.hjemModules.default
       ];
 
-      persistence.data.directories = [
-        ".ssh"
-      ];
-
       environment.systemPackages = with pkgs; [
         changepass
         jaq
+        btop
+        binutils
       ];
 
       environment.variables = {

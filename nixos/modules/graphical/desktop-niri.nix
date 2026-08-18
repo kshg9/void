@@ -10,15 +10,26 @@
       programs.niri.enable = true;
       environment.systemPackages = [ pkgs.xwayland-satellite ];
 
+      sops.secrets.wallhaven_api = { };
+
+      sops.templates."wallhaven.toml".owner = "kdj";
+
+      sops.templates."wallhaven.toml".content = ''
+        [plugin_settings."noctalia/wallhaven"]
+        api_key = "${config.sops.placeholder.wallhaven_api}"
+      '';
+
       hjem.extraModules = [
         (
-          { config, lib, ... }:
+          hjemArgs@{ ... }:
           let
+            hjemConfig = hjemArgs.config;
+            hjemLib = hjemArgs.lib;
             assets = ../../../assets;
             avatar =
               let
-                jpg = assets + "/${config.user}.jpg";
-                png = assets + "/${config.user}.png";
+                jpg = assets + "/${hjemConfig.user}.jpg";
+                png = assets + "/${hjemConfig.user}.png";
               in
               if builtins.pathExists jpg then
                 jpg
@@ -32,21 +43,31 @@
             programs.noctalia = {
               enable = true;
               settings = {
+                include.files = [ config.sops.templates."wallhaven.toml".path ];
                 shell = {
                   font_family = "Atkinson Hyperlegible Next";
                   settings_show_advanced = true;
-                  avatar_path = lib.mkIf (avatar != null) avatar;
+                  avatar_path = hjemLib.mkIf (avatar != null) avatar;
                 };
                 theme = {
                   mode = "dark";
                   source = "wallpaper";
                 };
+                plugins = {
+                  enabled = [ "noctalia/wallhaven" ];
+                };
+                plugin_settings."noctalia/wallhaven" = {
+                  download_dir = "~/Pictures/Wallhaven";
+                };
+                wallpaper = {
+                  directory = "~/Pictures/Wallhaven";
+                };
                 accessibility = {
-                  ui_scale = 1.1;
+                  ui_scale = 1.12;
                 };
                 bar = {
                   default = {
-                    scale = 1.1;
+                    scale = 1.12;
                     position = "top";
                     thickness = 36;
                     margin_ends = 0;
@@ -76,8 +97,8 @@
                 };
                 widget = {
                   clock = {
-                    font_weight = 700;
                     format = "{:%-I:%M %p}";
+                    font_weight = 700;
                   };
                 };
                 backdrop = {

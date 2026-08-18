@@ -38,6 +38,8 @@
 
         inputs.disko.nixosModules.disko
         self.diskoConfigurations.uriel
+
+        inputs.nixos-hardware.nixosModules.lenovo-ideapad-15ach6
       ];
 
       extras = {
@@ -49,11 +51,31 @@
       };
 
       desktop.configNiri.enable = true;
+      services.fstrim.enable = true;
+
+      services.logind.settings = {
+        Login = {
+          HandleLidSwitch = "suspend-then-hibernate";
+          HandleLidSwitchExternalPower = "suspend";
+          HandlePowerKey = "suspend";
+        };
+      };
+
+      systemd.sleep.settings = {
+        Sleep = {
+          HibernateDelaySec = "1h";
+        };
+      };
 
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
       boot.kernelPackages = pkgs.linuxPackages_latest;
+
+      # Memory optimizations (tmpfs and zram)
+      boot.tmp.useTmpfs = true;
+      zramSwap.enable = true;
+      boot.kernel.sysctl."vm.swappiness" = 100;
 
       networking.hostName = "uriel";
       networking.networkmanager.enable = true;

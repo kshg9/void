@@ -16,8 +16,5 @@
       "/var/lib/systemd/backlight"
       "/var/lib/sops-nix"
     ];
-
-    # Only this user's $HOME persists
-    persistence.user = "kdj";
   };
 }

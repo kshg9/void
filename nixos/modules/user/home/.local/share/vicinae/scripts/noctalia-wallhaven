@@ -1,0 +1,8 @@
+#!/bin/sh
+# @vicinae.schemaVersion 1
+# @vicinae.title Wallhaven
+# @vicinae.mode silent
+# @vicinae.keywords ["wallhaven", "wallpaper", "noctalia"]
+# @vicinae.description Open Noctalia's Wallhaven wallpaper browser
+
+noctalia msg panel-toggle noctalia/wallhaven:browser

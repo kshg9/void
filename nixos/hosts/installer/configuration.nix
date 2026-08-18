@@ -68,7 +68,6 @@
         ];
         show-trace = true;
         fallback = false;
-        max-jobs = 0;
       };
 
       environment.systemPackages = [

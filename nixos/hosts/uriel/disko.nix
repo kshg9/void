@@ -36,12 +36,6 @@
                   # TRIM/discard for SSD longevity
                   allowDiscards = true;
                 };
-                # disko will prompt for a passphrase during `disko --mode create`
-                # to enroll a fido2 key or tpm later:
-                #   sudo systemd-cryptenroll --fido2-device=auto /dev/nvme0n1p3
-                # if using TPM:
-                #   sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
-
                 content = {
                   type = "btrfs";
                   extraArgs = [ "-f" ];

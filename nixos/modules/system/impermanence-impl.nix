@@ -23,26 +23,14 @@
         boot.initrd.systemd.enable = true;
 
         environment.persistence = {
-          "/persist/userdata".users."${cfg.user}" = {
-            directories = cfg.data.directories;
-            files = cfg.data.files;
-          };
-
-          "/persist/usercache".users."${cfg.user}" = {
-            directories = cfg.cache.directories;
-            files = cfg.cache.files;
-          };
-
           "/persist/system" = {
             hideMounts = true;
             directories = [
               "/etc/nixos"
-              "/var/log"
               "/var/lib/bluetooth"
               "/var/lib/nixos"
               "/var/lib/systemd/coredump"
               "/etc/NetworkManager/system-connections"
-              "/tmp"
             ]
             ++ cfg.directories;
             files = [
@@ -74,13 +62,14 @@
             mount -o subvol=/ /dev/mapper/${cfg.luksName} /mnt
 
             btrfs subvolume list -o /mnt/root |
-              cut -f9 -d' ' |
+              cut -f9- -d' ' |
               while read subvolume; do
                 echo "deleting /$subvolume subvolume..."
                 btrfs subvolume delete "/mnt/$subvolume"
               done &&
               echo "deleting /root subvolume..." &&
               btrfs subvolume delete /mnt/root
+
             echo "restoring blank /root subvolume..."
             btrfs subvolume snapshot /mnt/root-blank /mnt/root
 

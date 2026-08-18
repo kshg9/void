@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.nixosModules.noctalia = { pkgs, lib, ... }: {
+  flake.nixosModules.noctalia = { pkgs, ... }: {
     imports = [
       inputs.noctalia.nixosModules.default
     ];
@@ -12,5 +12,6 @@
 
     # Override default recommendation of noctalia
     services.power-profiles-daemon.enable = false;
+
   };
 }

@@ -70,6 +70,7 @@
         environment.variables = {
           XCURSOR_THEME = "Bibata-Modern-Ice";
           XCURSOR_SIZE = "28";
+          NIXOS_OZONE_WL = "1";
         };
 
         environment.systemPackages = [

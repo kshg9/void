@@ -19,4 +19,4 @@ ln -sf "$iso_file" "$dest"
 
 echo
 echo "=== ISO ready: $dest ==="
-echo "Write to USB: sudo dd if=$dest of=/dev/sdX bs=1M status=progress"
+echo "Write to USB: sudo dd if=/home/kdj/urielOS.iso of=/dev/sda bs=4M conv=fdatasync status=progress"

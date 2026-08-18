@@ -14,10 +14,11 @@
         '';
       };
 
-      user = lib.mkOption {
-        default = "username";
+      users = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
         description = ''
-          Main user
+          List of users whose home directories should persist data
         '';
       };
 

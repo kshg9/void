@@ -11,7 +11,7 @@
       ];
 
       sops.age = {
-        keyFile = "/var/lib/sops-nix/key.txt";
+        keyFile = "/persist/system/var/lib/sops-nix/key.txt";
         generateKey = true;
       };
 

@@ -19,8 +19,8 @@
             enable = true;
             enableOffloadCmd = true;
           };
-          nvidiaBusId = "PCI:1:0:0";
-          amdgpuBusId = "PCI:5:0:0";
+          nvidiaBusId = lib.mkForce "PCI:1:0:0";
+          amdgpuBusId = lib.mkForce "PCI:5:0:0";
         };
 
         powerManagement = {
