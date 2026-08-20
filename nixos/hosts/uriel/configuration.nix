@@ -12,6 +12,7 @@
   flake.nixosModules.hostUriel =
     {
       pkgs,
+      lib,
       ...
     }:
     {
@@ -28,7 +29,6 @@
         self.nixosModules.sops
         self.nixosModules.extras
         self.nixosModules.tailscale
-        self.nixosModules.docker
         self.nixosModules.qemu
         self.nixosModules.firefox
 
@@ -46,7 +46,6 @@
         lanzaboote.enable = true;
         vicinae.enable = true;
         nvidia.enable = true;
-        chrome.enable = true;
         emacs.enable = true;
       };
 
@@ -67,7 +66,7 @@
         };
       };
 
-      boot.loader.systemd-boot.enable = true;
+      boot.loader.systemd-boot.enable = lib.mkDefault true;
       boot.loader.efi.canTouchEfiVariables = true;
 
       boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -81,30 +80,10 @@
       networking.networkmanager.enable = true;
 
       sops.defaultSopsFile = ./../../../secrets/uriel.yaml;
-      sops.secrets.github_ssh_private_key = {
-        path = "/home/kdj/.ssh/id_ed25519_gh";
-        owner = "kdj";
-        group = "users";
-        mode = "0600";
-      };
-      sops.secrets.github_ssh_pubkey = {
-        path = "/home/kdj/.ssh/id_ed25519_gh.pub";
-        owner = "kdj";
-        group = "users";
-        mode = "0444";
-      };
-      sops.secrets.vcs_ssh_private_key = {
-        path = "/home/kdj/.ssh/id_ed25519_vcs";
-        owner = "kdj";
-        group = "users";
-        mode = "0600";
-      };
-      sops.secrets.vcs_ssh_pubkey = {
-        path = "/home/kdj/.ssh/id_ed25519_vcs.pub";
-        owner = "kdj";
-        group = "users";
-        mode = "0444";
-      };
+      sops.secrets.github_ssh_private_key.owner = "kdj";
+      sops.secrets.github_ssh_pubkey.owner = "kdj";
+      sops.secrets.vcs_ssh_private_key.owner = "kdj";
+      sops.secrets.vcs_ssh_pubkey.owner = "kdj";
 
       system.stateVersion = "26.05";
     };

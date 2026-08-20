@@ -49,6 +49,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixjail = {
+      url = "github:kshg9/nixjail";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Minimal X11 interface for installer
     maximizer = {
       url = "github:BirdeeHub/maximizer";

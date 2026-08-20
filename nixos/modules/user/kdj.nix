@@ -11,7 +11,10 @@
     {
       imports = [
         (self.userBase user)
-        self.nixosModules.llm-agents
+        self.nixosModules.isolate-agents
+        self.nixosModules.isolate-pi
+        self.nixosModules.isolate-dsh
+        self.nixosModules.isolate-apps
       ];
 
       users.users.${user} = {
@@ -19,17 +22,14 @@
         extraGroups = [
           "wheel"
           "networkmanager"
-          "keys"
           "libvirtd"
           "lp"
           "lpadmin"
-          "docker"
         ];
       };
 
       hjem.users.${user} = {
         imports = [
-          self.hjemModules.vscodium
           self.hjemModules.gtk
         ];
 
@@ -37,32 +37,20 @@
           #obsidian
           #anki-bin
           qbittorrent
-          vesktop
           rclone
           gh
           tealdeer
 
-          # dev tools specific to this founder
-          helix
+          # dev
           tmux
           zk
-          neovim
-          nixd
-          statix
-          nixfmt
-          nix-diff
-          hydra-check
-          treefmt
           jujutsu
 
           # CLI tools & utils
-          pciutils
-          psmisc
-          socat
-          sops
           lsof
           rustscan
-          onefetch
+          socat
+          treefmt
 
           # Apps
           sioyek

@@ -20,6 +20,18 @@
         jaq
         btop
         binutils
+
+        nixd
+        statix
+        nixfmt
+        nix-diff
+        hydra-check
+
+        pciutils
+        psmisc
+
+        neovim
+        helix
       ];
 
       environment.variables = {

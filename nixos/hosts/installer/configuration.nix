@@ -73,6 +73,7 @@
       environment.systemPackages = [
         inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
         pkgs.kitty
+        pkgs.helix
         pkgs.tmux
         pkgs.neovim
         pkgs.changepass
