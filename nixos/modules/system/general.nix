@@ -20,10 +20,21 @@
         jaq
         btop
         binutils
+
+        nixd
+        statix
+        nixfmt
+        nix-diff
+        hydra-check
+
+        pciutils
+        psmisc
+
+        neovim
       ];
 
       environment.variables = {
-        EDITOR = "hx";
+        EDITOR = "nvim";
       };
 
       time.timeZone = "Asia/Kolkata";

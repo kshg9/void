@@ -5,7 +5,6 @@
       packages = with pkgs; [
         playerctl
         brightnessctl
-        bibata-cursors
         kitty
         yazi
         git
@@ -29,6 +28,7 @@
 
       xdg.config.files = {
         "yazi/plugins/full-border.yazi".source = "${pkgs.yaziPlugins.full-border}";
+        "yazi/plugins/git.yazi".source = "${pkgs.yaziPlugins.git}";
       };
     };
 }

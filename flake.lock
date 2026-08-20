@@ -259,11 +259,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1787216589,
-        "narHash": "sha256-XtBw86QXg9HtTU1IlD3yTpIHAG0r5df6SCrpDVG/1Cc=",
+        "lastModified": 1787286673,
+        "narHash": "sha256-HRmx7PnoqUNtA06P/FEyygZeUJIzbNUtx4zo9Jiiz9s=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "5aad5f64e621fc35fed0fddcc2b6e17ab662cf78",
+        "rev": "0bedd15c76b9422a649b05e44b82666196e5246f",
         "type": "github"
       },
       "original": {
@@ -309,6 +309,26 @@
       "original": {
         "owner": "Mic92",
         "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
+    "nixjail": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787319116,
+        "narHash": "sha256-yuc5qucpPRYNfeCXLFU/LTzeb1vvIS6+vDgTRFLPR0U=",
+        "owner": "kshg9",
+        "repo": "nixjail",
+        "rev": "c40f389bc20adbdd1b57c0456661c7bdc30fac77",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kshg9",
+        "repo": "nixjail",
         "type": "github"
       }
     },
@@ -382,11 +402,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1787101114,
-        "narHash": "sha256-gwrPcFf/rDjHPaVflbDZ040ZDmBTRj/7+s8ZmE2SaIM=",
+        "lastModified": 1787204541,
+        "narHash": "sha256-OURZPknrTjQrlNyxPdqzyqmU/81Wes1CUP/Ft1Rv/YI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b18a4b905f8d028dc4476412e6d6891728695379",
+        "rev": "5880666fd9eb563038431edb35c2d0aa595884e6",
         "type": "github"
       },
       "original": {
@@ -462,11 +482,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1787196493,
-        "narHash": "sha256-vlpv5X3qOzoTGtJxejXkIdivgnJ3jI+3Gn1neD6y/mI=",
+        "lastModified": 1787311790,
+        "narHash": "sha256-unzdxVphY9aAR+GX8U1hZzgBPYhq5kf+8SGOcRUm/P8=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "02286bbdcfa81dc3675c9de1d7203a466fcaf0eb",
+        "rev": "69a90183531de388cab40e84a3a221ba94464501",
         "type": "github"
       },
       "original": {
@@ -509,6 +529,7 @@
         "llm-agents": "llm-agents",
         "maximizer": "maximizer",
         "nix-index-database": "nix-index-database",
+        "nixjail": "nixjail",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",

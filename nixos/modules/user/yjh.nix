@@ -18,10 +18,8 @@
 
       users.users.${user} = {
         extraGroups = [
-          "keys"
           "libvirtd"
           "lp"
-          "docker"
           "lpadmin"
         ];
         hashedPasswordFile = "/persist/passwords/${user}";

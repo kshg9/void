@@ -14,14 +14,6 @@
         '';
       };
 
-      users = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
-        description = ''
-          List of users whose home directories should persist data
-        '';
-      };
-
       directories = lib.mkOption {
         type = lib.types.listOf (lib.types.either lib.types.str lib.types.attrs);
         default = [ ];
@@ -31,38 +23,6 @@
       };
 
       files = lib.mkOption {
-        type = lib.types.listOf (lib.types.either lib.types.str lib.types.attrs);
-        default = [ ];
-        description = ''
-          files to persist
-        '';
-      };
-
-      data.directories = lib.mkOption {
-        type = lib.types.listOf (lib.types.either lib.types.str lib.types.attrs);
-        default = [ ];
-        description = ''
-          directories to persist
-        '';
-      };
-
-      data.files = lib.mkOption {
-        type = lib.types.listOf (lib.types.either lib.types.str lib.types.attrs);
-        default = [ ];
-        description = ''
-          files to persist
-        '';
-      };
-
-      cache.directories = lib.mkOption {
-        type = lib.types.listOf (lib.types.either lib.types.str lib.types.attrs);
-        default = [ ];
-        description = ''
-          directories to persist
-        '';
-      };
-
-      cache.files = lib.mkOption {
         type = lib.types.listOf (lib.types.either lib.types.str lib.types.attrs);
         default = [ ];
         description = ''

@@ -49,6 +49,8 @@
           };
         };
 
+        security.pam.services.sddm.enableGnomeKeyring = true;
+
         services.xserver.xkb = {
           layout = "us";
           variant = "";

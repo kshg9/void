@@ -10,5 +10,5 @@
       myPkgs = self.packages.${system} or { };
       addPkgs = removeAttrs myPkgs (builtins.attrNames prev);
     in
-    prev // addPkgs;
+    addPkgs;
 }

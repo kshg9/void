@@ -16,7 +16,7 @@
       ];
 
       config = lib.mkIf config.extras.lanzaboote.enable {
-        boot.loader.systemd-boot.enable = lib.mkForce false;
+        boot.loader.systemd-boot.enable = false;
 
         boot.lanzaboote = {
           enable = true;
@@ -32,26 +32,6 @@
             includeFirmwareBuiltinKeys = true;
           };
 
-          measuredBoot = {
-            enable = true;
-
-            # PCR 0: BIOS/Firmware
-            # PCR 4: Bootloader (Lanzaboote)
-            # PCR 7: Secure Boot state
-            pcrs = [
-              0
-              4
-              7
-            ];
-
-            autoCryptenroll = {
-              enable = true;
-              # Ties your TPM directly to your LUKS partition for passwordless boot!
-              # If your BIOS, Bootloader, or Secure Boot state changes, the TPM safely locks the drive.
-              device = "/dev/disk/by-id/nvme-SAMSUNG_MZALQ512HBLU-00BL2_S65DNX1T647774-part3";
-              autoReboot = true;
-            };
-          };
         };
 
         environment.systemPackages = [
@@ -59,7 +39,9 @@
           pkgs.sbctl
         ];
 
-        persistence.directories = [ "/var/lib/sbctl" ];
+        persistence.directories = [
+          "/var/lib/sbctl"
+        ];
       };
     };
 }
