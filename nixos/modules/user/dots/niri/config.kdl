@@ -23,15 +23,6 @@ window-rule {
 }
 spawn-at-startup "noctalia"
 spawn-at-startup "vicinae" "server"
-workspace "w0" {
-
-}
-workspace "w1" {
-
-}
-workspace "w2" {
-
-}
 binds {
     Mod+Shift+Slash {
         show-hotkey-overlay
@@ -229,27 +220,21 @@ binds {
     Mod+Q {
         close-window
     }
-    // Workspaces setup back to your original configuration
+    // Workspaces setup
     Mod+1 {
-        focus-workspace "w0"
+        focus-workspace "browsers"
     }
     Mod+2 {
-        focus-workspace "w1"
+        focus-workspace "terminals"
     }
     Mod+3 {
-        focus-workspace "w2"
+        focus-workspace "socials"
+    }
+    Mod+4 {
+        focus-workspace "misc"
     }
     Mod+Shift+1 {
-        move-column-to-workspace "w0"
-    }
-    Mod+Shift+2 {
-        move-column-to-workspace "w1"
-    }
-    Mod+Shift+3 {
-        move-column-to-workspace "w2"
-    }
-    Mod+Shift+4 {
-        move-column-to-workspace "w3"
+        move-column-to-workspace "browsers"
     }
     Mod+U {
         focus-workspace-down

@@ -31,6 +31,7 @@
         self.nixosModules.tailscale
         self.nixosModules.qemu
         self.nixosModules.firefox
+        self.nixosModules.xdg
 
         # Per-user Hjem profile.
         self.nixosModules.userKdj

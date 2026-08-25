@@ -35,6 +35,7 @@
                 settings = {
                   # TRIM/discard for SSD longevity
                   allowDiscards = true;
+                  crypttabExtraOpts = [ "tpm2-device=auto" ];
                 };
                 content = {
                   type = "btrfs";

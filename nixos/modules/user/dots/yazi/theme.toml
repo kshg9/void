@@ -2,7 +2,8 @@
 unknown_sign   = " "
 ignored_sign   = "I"
 untracked_sign = "?"
-modified_sign  = "M"
+unstaged_sign  = "M"
+staged_sign    = "S"
 added_sign     = "A"
 deleted_sign   = "D"
 updated_sign   = "U"
@@ -11,7 +12,8 @@ clean_sign     = "✓"
 unknown   = { fg = "#6c7086", dim = true }
 ignored   = { fg = "#6c7086", dim = true }
 untracked = { fg = "#f9e2af", bold = true } # Yellow
-modified  = { fg = "#89b4fa", bold = true } # Blue
+unstaged  = { fg = "#89b4fa", bold = true } # Blue
+staged    = { fg = "#89b4fa", bold = true } # Blue
 added     = { fg = "#a6e3a1", bold = true } # Green
 deleted   = { fg = "#f38ba8", bold = true } # Red
 updated   = { fg = "#94e2d5", bold = true } # Teal

@@ -23,6 +23,13 @@
         starship
         wlsunset
         nautilus
+
+        file
+        ffmpeg
+        _7zz
+        jq
+        poppler-utils
+        imagemagick
       ];
 
       xdg.config.files = {

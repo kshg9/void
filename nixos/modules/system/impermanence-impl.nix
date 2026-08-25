@@ -56,7 +56,7 @@
             mount -o subvol=/ /dev/mapper/${cfg.luksName} /mnt
 
             btrfs subvolume list -o /mnt/root |
-              cut -f9- -d' ' |
+              cut -f9 -d' ' |
               while read subvolume; do
                 echo "deleting /$subvolume subvolume..."
                 btrfs subvolume delete "/mnt/$subvolume"

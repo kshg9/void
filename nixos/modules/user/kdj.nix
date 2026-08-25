@@ -44,6 +44,7 @@
           # dev
           tmux
           zk
+          zeal
           jujutsu
 
           # CLI tools & utils

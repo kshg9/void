@@ -1,6 +1,7 @@
 {
   # Clean home directory by forcing applications to use XDG Base Directories
   flake.nixosModules.xdg = {
+
     environment.sessionVariables = {
       # XDG Base Directories
       XDG_CACHE_HOME = "$HOME/.cache";
