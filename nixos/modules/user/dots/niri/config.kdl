@@ -21,6 +21,23 @@ window-rule {
     match app-id="firefox$" title="^Picture-in-Picture$"
     open-floating true
 }
+window-rule {
+    match app-id="^re\\.sonny\\.Junction$"
+    open-floating true
+}
+window-rule {
+    match app-id="^google-chrome"
+    match app-id="^librewolf$"
+    match app-id="firefox$"
+    geometry-corner-radius 8 8 0 0
+}
+window-rule {
+    match app-id="^kitty$"
+    background-effect {
+        blur true
+        xray true
+    }
+}
 spawn-at-startup "noctalia"
 spawn-at-startup "vicinae" "server"
 binds {
@@ -375,3 +392,4 @@ layout {
     }
 }
 prefer-no-csd
+include optional=true "noctalia.kdl"

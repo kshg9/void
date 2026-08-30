@@ -10,6 +10,7 @@
         emacs.enable = lib.mkEnableOption "the Emacs editor";
         kube.enable = lib.mkEnableOption "Kubernetes tooling (kubectl, k3d, helm)";
         lanzaboote.enable = lib.mkEnableOption "Secure Boot using lanzaboote";
+        rust.enable = lib.mkEnableOption "Rust toolchain using fenix";
       };
 
       imports = [
@@ -19,6 +20,7 @@
         self.nixosModules.emacs
         self.nixosModules.kube
         self.nixosModules.lanzaboote
+        self.nixosModules.rust
       ];
     };
 }

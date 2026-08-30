@@ -10,6 +10,7 @@ alias find="fd"
 alias ls="eza"
 alias ll="eza --long"
 alias lt="eza --tree"
+alias icat="kitten icat"
 
 # Dim the autosuggestions (edge/suggestion) so they read as a ghost of
 # what's already typed instead of matching the live foreground.

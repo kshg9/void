@@ -39,17 +39,16 @@
           pathInside:
           let
             fullPath = dir + (if pathInside == "" then "" else "/${pathInside}");
+            contents = builtins.readDir fullPath;
+            paths = lib.mapAttrsToList (
+              n: type:
+              let
+                rel = if pathInside == "" then n else "${pathInside}/${n}";
+              in
+              if type == "directory" then findPaths rel else rel
+            ) contents;
           in
-          fullPath
-          |> builtins.readDir
-          |> lib.mapAttrsToList (
-            n: type:
-            let
-              rel = if pathInside == "" then n else "${pathInside}/${n}";
-            in
-            if type == "directory" then findPaths rel else rel
-          )
-          |> lib.flatten;
+          lib.flatten paths;
         filesList = if builtins.pathExists dir then findPaths "" else [ ];
       in
       lib.genAttrs filesList (file: {

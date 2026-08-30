@@ -13,18 +13,25 @@
       nix-direnv.enable = true;
     };
 
+    nix.package = pkgs.lix;
     nix.settings = {
       experimental-features = [
         "nix-command"
         "flakes"
-        "pipe-operators"
-        "cgroups"
       ];
-      use-cgroups = true;
+      allowed-users = [ "@wheel" ];
+      trusted-users = [ "root" ];
+      require-sigs = true;
+      allow-import-from-derivation = false;
+      accept-flake-config = false;
+      warn-dirty = false;
+      auto-optimise-store = true;
       use-xdg-base-directories = true;
       show-trace = true;
       builders-use-substitutes = true;
     };
+
+    nix.channel.enable = false;
 
     programs.nix-ld = {
       enable = true;

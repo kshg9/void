@@ -31,10 +31,12 @@
 
         neovim
         helix
+        junction
       ];
 
       environment.variables = {
         EDITOR = "hx";
+        BROWSER = "xdg-open";
       };
 
       time.timeZone = "Asia/Kolkata";

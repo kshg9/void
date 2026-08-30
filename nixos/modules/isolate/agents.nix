@@ -1,52 +1,65 @@
 {
   inputs,
+  self,
   ...
 }:
 {
   flake.nixosModules.isolate-agents =
-    { pkgs, ... }:
+    {
+      pkgs,
+      ...
+    }:
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+      jail = inputs.jail-nix.lib.init pkgs;
+
+      helpers = self.lib.jailHelpers pkgs pkgs.lib;
+      inherit (helpers) mkJailedDesktop;
+
+      claudePkg = llmPkgs.claude-desktop;
+      chatgptPkg = llmPkgs.chatgpt;
+
+      claudeJailed = jail "claude-desktop" claudePkg (
+        with jail.combinators;
+        [
+          (persist-home "claude-desktop")
+          network
+          gui
+          gpu
+          unsafe-dbus
+          open-urls-in-browser
+
+          (try-readwrite "/tmp")
+
+          (try-readwrite (noescape "~/Projects"))
+          (try-readwrite (noescape "~/Documents"))
+          (try-readwrite (noescape "~/Downloads"))
+        ]
+      );
+
+      chatgptJailed = jail "chatgpt" chatgptPkg (
+        with jail.combinators;
+        [
+          (persist-home "chatgpt")
+          network
+          gui
+          gpu
+          unsafe-dbus
+          open-urls-in-browser
+
+          (try-readwrite "/tmp")
+
+          (try-readwrite (noescape "~/Projects"))
+          (try-readwrite (noescape "~/Documents"))
+          (try-readwrite (noescape "~/Downloads"))
+        ]
+      );
     in
     {
-      imports = [ inputs.nixjail.nixosModules.nixjail ];
-
-      nixjail.bwrap.profiles = [
-        {
-          packages = f: p: {
-            claude-desktop = llmPkgs.claude-desktop;
-            antigravity-cli = llmPkgs.antigravity-cli;
-            chatgpt = llmPkgs.chatgpt;
-          };
-          xdg = true;
-          dri = true;
-          dev = true;
-          tmp = true;
-
-          shareNamespace = {
-            ipc = true;
-            pid = true;
-          };
-
-          autoBindHome = true;
-          homeDirRoot = "$HOME/.nixjail";
-
-          rwBinds = [
-            "$HOME/Documents"
-            "$HOME/Downloads"
-            "$HOME/.nixjail/google-chrome"
-          ];
-
-          extraConfig = [
-            "\$(for b in \${NIXJAIL_RW_BINDS:-}; do echo \"--bind-try \$b \$b\"; done)"
-            "\$(for b in \${NIXJAIL_RO_BINDS:-}; do echo \"--ro-bind-try \$b \$b\"; done)"
-            "\${NIXJAIL_EXTRA:-}"
-          ];
-        }
+      environment.systemPackages = [
+        (mkJailedDesktop claudeJailed claudePkg)
+        (mkJailedDesktop chatgptJailed chatgptPkg)
       ];
 
-      hjem.users.kdj.packages = [
-        llmPkgs.workmux
-      ];
     };
 }

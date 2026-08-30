@@ -12,6 +12,7 @@
       imports = [
         (self.userBase user)
         self.nixosModules.isolate-agents
+        self.nixosModules.isolate-agy
         self.nixosModules.isolate-pi
         self.nixosModules.isolate-dsh
         self.nixosModules.isolate-apps
@@ -56,6 +57,9 @@
           # Apps
           sioyek
           mpv
+          thunderbird-bin
+          librewolf-bin
+          cudatext
         ];
       };
     };

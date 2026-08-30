@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-dsh =
+  flake.nixosModules.isolate-agy =
     {
       pkgs,
       lib,
@@ -12,36 +12,35 @@
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
       jail = inputs.jail-nix.lib.init pkgs;
-
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      dshPkg = helpers.wrapAgent llmPkgs.dsh (
+      agyPkg = helpers.wrapAgent llmPkgs.antigravity-cli (
         with pkgs;
         [
           bash
           coreutils
-          nodejs
-          pnpm
           wl-clipboard
         ]
       );
       agent-runtime = helpers.agentRuntime jail;
 
-      dshJailed = jail "dsh" dshPkg (
+      agyJailed = jail "agy" agyPkg (
         with jail.combinators;
         [
           network
           gui
-          (persist-home "dsh")
+          (persist-home "agy")
 
           (try-readwrite (noescape "~/Projects"))
           (try-readwrite (noescape "~/Downloads"))
 
+          # (try-readonly "/var/log")
+          # ——— dynamic CWD ~/JailedProject: JAIL_RW=. agy ———
           agent-runtime
         ]
       );
     in
     {
-      environment.systemPackages = [ dshJailed ];
+      environment.systemPackages = [ agyJailed ];
     };
 }

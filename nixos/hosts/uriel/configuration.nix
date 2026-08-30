@@ -30,7 +30,6 @@
         self.nixosModules.extras
         self.nixosModules.tailscale
         self.nixosModules.qemu
-        self.nixosModules.firefox
         self.nixosModules.xdg
 
         # Per-user Hjem profile.
@@ -48,6 +47,7 @@
         vicinae.enable = true;
         nvidia.enable = true;
         emacs.enable = true;
+        rust.enable = true;
       };
 
       desktop.configNiri.enable = true;

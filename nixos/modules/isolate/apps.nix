@@ -1,42 +1,61 @@
 {
   inputs,
+  self,
   ...
 }:
 {
-  flake.nixosModules.isolate-apps = {
-    imports = [ inputs.nixjail.nixosModules.nixjail ];
+  flake.nixosModules.isolate-apps =
+    {
+      pkgs,
+      ...
+    }:
+    let
+      jail = inputs.jail-nix.lib.init pkgs;
 
-    nixjail.bwrap.profiles = [
-      {
-        packages = f: p: {
-          google-chrome = p.google-chrome;
-          vesktop = p.vesktop;
-        };
+      helpers = self.lib.jailHelpers pkgs pkgs.lib;
+      inherit (helpers) mkJailedDesktop;
 
-        xdg = true;
-        dri = true;
-        dev = true;
-        tmp = true;
+      chromePkg = pkgs.google-chrome;
+      vesktopPkg = pkgs.vesktop;
 
-        shareNamespace = {
-          ipc = true;
-          pid = true;
-        };
+      chromeJailed = jail "chrome" chromePkg (
+        with jail.combinators;
+        [
+          (persist-home "chrome")
+          network
+          gui
+          gpu
+          pipewire
+          pulse
+          unsafe-dbus
+          camera
 
-        autoBindHome = true;
-        homeDirRoot = "$HOME/.nixjail";
+          (try-readwrite (noescape "~/Downloads"))
+          (try-readwrite (noescape "~/Pictures"))
+        ]
+      );
 
-        rwBinds = [
-          "$HOME/Downloads"
-          "$HOME/Pictures"
-        ];
+      vesktopJailed = jail "vesktop" vesktopPkg (
+        with jail.combinators;
+        [
+          (persist-home "vesktop")
+          network
+          gui
+          gpu
+          pipewire
+          pulse
+          unsafe-dbus
+          camera
 
-        extraConfig = [
-          "\$(for b in \${NIXJAIL_RW_BINDS:-}; do echo \"--bind-try \$b \$b\"; done)"
-          "\$(for b in \${NIXJAIL_RO_BINDS:-}; do echo \"--ro-bind-try \$b \$b\"; done)"
-          "\${NIXJAIL_EXTRA:-}"
-        ];
-      }
-    ];
-  };
+          (try-readwrite (noescape "~/Downloads"))
+          (try-readwrite (noescape "~/Pictures"))
+        ]
+      );
+    in
+    {
+      environment.systemPackages = [
+        (mkJailedDesktop chromeJailed chromePkg)
+        (mkJailedDesktop vesktopJailed vesktopPkg)
+      ];
+    };
 }

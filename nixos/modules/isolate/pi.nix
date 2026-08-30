@@ -4,53 +4,44 @@
 }:
 {
   flake.nixosModules.isolate-pi =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      ...
+    }:
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+      jail = inputs.jail-nix.lib.init pkgs;
 
-      wrapAgent =
-        pkg:
-        pkgs.symlinkJoin {
-          name = "${pkg.name}-deps-wrapped";
-          paths = [ pkg ];
-          buildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            for bin in $out/bin/*; do
-              wrapProgram "$bin" \
-                --prefix PATH : ${
-                  lib.makeBinPath [
-                    pkgs.nodejs
-                    pkgs.pnpm
-                  ]
-                }
-            done
-          '';
-        };
+      helpers = inputs.self.lib.jailHelpers pkgs lib;
+
+      piPkg = helpers.wrapAgent llmPkgs.pi (
+        with pkgs;
+        [
+          bash
+          coreutils
+          nodejs
+          pnpm
+          wl-clipboard
+        ]
+      );
+      agent-runtime = helpers.agentRuntime jail;
+
+      piJailed = jail "pi" piPkg (
+        with jail.combinators;
+        [
+          network
+          gui
+          (persist-home "pi")
+
+          (try-readwrite (noescape "~/Projects"))
+          (try-readwrite (noescape "~/Downloads"))
+
+          agent-runtime
+        ]
+      );
     in
     {
-      imports = [ inputs.nixjail.nixosModules.nixjail ];
-
-      nixjail.bwrap.profiles = [
-        {
-          packages = f: p: {
-            pi = wrapAgent llmPkgs.pi;
-          };
-
-          xdg = true;
-
-          autoBindHome = true;
-          homeDirRoot = "$HOME/.nixjail";
-
-          rwBinds = [
-            "$HOME/Projects"
-          ];
-
-          extraConfig = [
-            "\$(for b in \${NIXJAIL_RW_BINDS:-}; do echo \"--bind-try \$b \$b\"; done)"
-            "\$(for b in \${NIXJAIL_RO_BINDS:-}; do echo \"--ro-bind-try \$b \$b\"; done)"
-            "\${NIXJAIL_EXTRA:-}"
-          ];
-        }
-      ];
+      environment.systemPackages = [ piJailed ];
     };
 }

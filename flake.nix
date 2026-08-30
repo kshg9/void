@@ -54,12 +54,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Minimal X11 interface for installer
-    maximizer = {
-      url = "github:BirdeeHub/maximizer";
-      inputs.nixpkgs.follows = "nixpkgs";
+    jail-nix = {
+      url = "sourcehut:~alexdavid/jail.nix";
     };
 
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -80,6 +82,7 @@
         ++ importTree ./nixos/modules
         ++ importTree ./packages
         ++ [ inputs.disko.flakeModules.default ];
+
       systems = [ "x86_64-linux" ];
     };
 }
