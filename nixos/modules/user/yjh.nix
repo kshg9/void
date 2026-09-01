@@ -25,9 +25,11 @@
         hashedPasswordFile = "/persist/passwords/${user}";
       };
 
-      hjem.users.${user}.packages = with pkgs; [
-        mpv
-      ];
+      hjem.users.${user} = {
+        imports = [
+          self.hjemModules.gtk
+        ];
+      };
 
     };
 }

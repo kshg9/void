@@ -48,6 +48,7 @@
         nvidia.enable = true;
         emacs.enable = true;
         rust.enable = true;
+        devel.enable = true;
       };
 
       desktop.configNiri.enable = true;

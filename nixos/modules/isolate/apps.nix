@@ -32,6 +32,7 @@
 
           (try-readwrite (noescape "~/Downloads"))
           (try-readwrite (noescape "~/Pictures"))
+          (try-readwrite "/tmp")
         ]
       );
 

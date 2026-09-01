@@ -11,6 +11,7 @@
         kube.enable = lib.mkEnableOption "Kubernetes tooling (kubectl, k3d, helm)";
         lanzaboote.enable = lib.mkEnableOption "Secure Boot using lanzaboote";
         rust.enable = lib.mkEnableOption "Rust toolchain using fenix";
+        devel.enable = lib.mkEnableOption "C/C++ dev and debugging tools";
       };
 
       imports = [
@@ -21,6 +22,7 @@
         self.nixosModules.kube
         self.nixosModules.lanzaboote
         self.nixosModules.rust
+        self.nixosModules.devel
       ];
     };
 }

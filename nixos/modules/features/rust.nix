@@ -9,7 +9,7 @@
     {
       config = lib.mkIf config.extras.rust.enable {
         environment.systemPackages = [
-          inputs.fenix.packages.${pkgs.stdenv.hostPlatform.system}.complete.toolchain
+          inputs.fenix.packages.${pkgs.stdenv.hostPlatform.system}.beta.completeToolchain
         ];
       };
     };

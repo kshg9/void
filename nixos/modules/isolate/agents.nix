@@ -11,7 +11,9 @@
     }:
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-      jail = inputs.jail-nix.lib.init pkgs;
+      jail = inputs.jail-nix.lib.extend {
+        inherit pkgs;
+      };
 
       helpers = self.lib.jailHelpers pkgs pkgs.lib;
       inherit (helpers) mkJailedDesktop;
@@ -28,6 +30,18 @@
           gpu
           unsafe-dbus
           open-urls-in-browser
+
+          (add-pkg-deps (
+            with pkgs;
+            [
+              bash
+              coreutils
+              gnused
+              git
+              ripgrep
+              python3
+            ]
+          ))
 
           (try-readwrite "/tmp")
 
@@ -46,6 +60,18 @@
           gpu
           unsafe-dbus
           open-urls-in-browser
+
+          (add-pkg-deps (
+            with pkgs;
+            [
+              bash
+              coreutils
+              gnused
+              git
+              ripgrep
+              python3
+            ]
+          ))
 
           (try-readwrite "/tmp")
 

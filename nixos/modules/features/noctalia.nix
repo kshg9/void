@@ -21,15 +21,6 @@
         # Override default recommendation of noctalia
         services.power-profiles-daemon.enable = false;
 
-        sops.secrets.wallhaven_api = { };
-
-        sops.templates."wallhaven.toml".owner = "kdj";
-
-        sops.templates."wallhaven.toml".content = ''
-          [plugin_settings."noctalia/wallhaven"]
-          api_key = "${config.sops.placeholder.wallhaven_api}"
-        '';
-
         hjem.extraModules = [
           (
             hjemArgs@{ ... }:
@@ -54,7 +45,6 @@
               programs.noctalia = {
                 enable = true;
                 settings = {
-                  include.files = [ config.sops.templates."wallhaven.toml".path ];
                   location = {
                     auto_locate = true;
                   };

@@ -55,5 +55,7 @@
       };
       flake = "/etc/nixos/void";
     };
+
+    environment.localBinInPath = true;
   };
 }
