@@ -49,11 +49,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixjail = {
-      url = "github:kshg9/nixjail";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     jail-nix = {
       url = "sourcehut:~alexdavid/jail.nix";
     };

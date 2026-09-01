@@ -17,9 +17,11 @@
       agyPkg = helpers.wrapAgent llmPkgs.antigravity-cli (
         with pkgs;
         [
+          eza
+          fd
           bash
-          coreutils
           wl-clipboard
+          gnugrep
         ]
       );
       agent-runtime = helpers.agentRuntime jail;

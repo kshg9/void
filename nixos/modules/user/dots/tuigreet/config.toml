@@ -1,0 +1,45 @@
+[display]
+show_time = true
+issue = false
+
+[layout]
+width = 60
+window_padding = 2
+container_padding = 1
+prompt_padding = 1
+
+[layout.widgets]
+time_position = "top"
+status_position = "bottom"
+
+[remember]
+username = true
+session = false
+user_session = true
+
+[user_menu]
+enabled = true
+min_uid = 1000
+max_uid = 29999
+
+[secret]
+mode = "characters"
+characters = "*"
+
+[background]
+kind = "none"
+
+[theme]
+border = "magenta"
+text = "cyan"
+time = "red"
+container = "black"
+title = "cyan"
+prompt = "green"
+input = "red"
+action = "blue"
+button = "yellow"
+
+[session]
+command = "systemd-cat -t niri niri-session"
+session_wrapper = "systemd-cat -t session"

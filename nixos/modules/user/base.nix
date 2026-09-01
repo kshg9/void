@@ -39,7 +39,8 @@
 
         users.${name} = {
           imports = [
-            self.hjemModules.terminal
+            self.hjemModules.baseUser
+            self.hjemModules.sharedApps
           ];
 
           enable = true;

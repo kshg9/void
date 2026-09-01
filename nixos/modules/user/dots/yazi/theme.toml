@@ -11,10 +11,31 @@ clean_sign     = "✓"
 
 unknown   = { fg = "#6c7086", dim = true }
 ignored   = { fg = "#6c7086", dim = true }
-untracked = { fg = "#f9e2af", bold = true } # Yellow
-unstaged  = { fg = "#89b4fa", bold = true } # Blue
-staged    = { fg = "#89b4fa", bold = true } # Blue
-added     = { fg = "#a6e3a1", bold = true } # Green
-deleted   = { fg = "#f38ba8", bold = true } # Red
-updated   = { fg = "#94e2d5", bold = true } # Teal
-clean     = { fg = "#a6e3a1", bold = true } # Green
+untracked = { fg = "#f9e2af", bold = true }
+unstaged  = { fg = "#89b4fa", bold = true }
+staged    = { fg = "#89b4fa", bold = true }
+added     = { fg = "#a6e3a1", bold = true }
+deleted   = { fg = "#f38ba8", bold = true }
+updated   = { fg = "#94e2d5", bold = true }
+clean     = { fg = "#a6e3a1", bold = true }
+
+[mode]
+normal_main = { fg = "#181616", bg = "#8ba4b0", bold = true }
+normal_alt  = { fg = "#c5c9c5", bg = "#2d4f67" }
+
+select_main = { fg = "#181616", bg = "#c4b28a", bold = true }
+select_alt  = { fg = "#c5c9c5", bg = "#2d4f67" }
+
+unset_main  = { fg = "#181616", bg = "#a292a3", bold = true }
+unset_alt   = { fg = "#c5c9c5", bg = "#2d4f67" }
+
+[status]
+perm_type  = { fg = "#8ba4b0" }
+perm_read  = { fg = "#c4b28a" }
+perm_write = { fg = "#c4746e" }
+perm_exec  = { fg = "#8a9a7b" }
+perm_sep   = { fg = "#2d4f67" }
+
+progress_label  = { fg = "#c5c9c5", bold = true }
+progress_normal = { fg = "#181616", bg = "#8ba4b0" }
+progress_error  = { fg = "#181616", bg = "#c4746e" }

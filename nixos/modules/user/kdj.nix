@@ -4,7 +4,7 @@
 }:
 {
   flake.nixosModules.userKdj =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     let
       user = "kdj";
     in
@@ -29,9 +29,22 @@
         ];
       };
 
+      sops.secrets.wallhaven_api = { };
+      sops.templates."wallhaven.toml" = {
+        owner = user;
+        content = ''
+          [plugin_settings."noctalia/wallhaven"]
+          api_key = "${config.sops.placeholder.wallhaven_api}"
+        '';
+      };
+
       hjem.users.${user} = {
         imports = [
           self.hjemModules.gtk
+        ];
+
+        programs.noctalia.settings.include.files = [
+          config.sops.templates."wallhaven.toml".path
         ];
 
         packages = with pkgs; [
@@ -40,7 +53,6 @@
           qbittorrent
           rclone
           gh
-          tealdeer
 
           # dev
           tmux
@@ -49,8 +61,6 @@
           jujutsu
 
           # CLI tools & utils
-          lsof
-          rustscan
           socat
           treefmt
 
@@ -59,7 +69,10 @@
           mpv
           thunderbird-bin
           librewolf-bin
-          cudatext
+          gnome-text-editor
+
+          # Recon
+          rustscan
         ];
       };
     };

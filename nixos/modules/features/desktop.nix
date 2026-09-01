@@ -21,35 +21,17 @@
       config = {
         services.xserver.enable = true;
 
-        # Minimal default SDDM configuration with Bibata cursor
-        # https://discourse.nixos.org/t/sddm-ignoring-cursor-theming/71645
-        services.displayManager.sddm = {
+        services.greetd = {
           enable = true;
-          package = pkgs.kdePackages.sddm;
-          extraPackages = [ pkgs.bibata-cursors ];
-          setupScript =
-            let
-              xresources = pkgs.writeText "xresources" ''
-                Xcursor.theme: ${config.environment.variables.XCURSOR_THEME}
-                Xcursor.size: ${config.environment.variables.XCURSOR_SIZE}
-              '';
-            in
-            ''
-              ${pkgs.xrdb}/bin/xrdb -merge ${xresources}
-            '';
           settings = {
-            General = {
-              InputMethod = "";
-            };
-            Theme = {
-              CursorTheme = "Bibata-Modern-Ice";
-              CursorSize = 28;
-              FacesDir = "/etc/sddm/faces";
+            default_session = {
+              user = "greeter";
+              command = "${pkgs.tuigreet}/bin/tuigreet --config ${../user/dots/tuigreet/config.toml}";
             };
           };
         };
 
-        security.pam.services.sddm.enableGnomeKeyring = true;
+        security.pam.services.greetd.enableGnomeKeyring = true;
 
         services.xserver.xkb = {
           layout = "us";
@@ -72,7 +54,6 @@
         environment.variables = {
           XCURSOR_THEME = "Bibata-Modern-Ice";
           XCURSOR_SIZE = "28";
-          NIXOS_OZONE_WL = "1";
         };
 
         environment.systemPackages = [

@@ -1,33 +1,29 @@
 {
-  flake.hjemModules.terminal =
+  flake.hjemModules.baseUser =
     { pkgs, ... }:
     {
       packages = with pkgs; [
-        playerctl
-        brightnessctl
-        kitty
-        yazi
+        # CLI Core
         git
-        difftastic
+        starship
         eza
         fd
         bat
-        magika-cli
         ripgrep
         fzf
-        htop
-        zoxide
-        just
-        wl-clipboard
-        libqalculate
-        starship
-        wlsunset
-        nautilus
-
         file
+        jq
+        zoxide
+        difftastic
+        lsof
+        tealdeer
+
+        # Terminal File Manager
+        yazi
+
+        # Misc Utilities
         ffmpeg
         _7zz
-        jq
         poppler-utils
         imagemagick
       ];

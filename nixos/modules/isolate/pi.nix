@@ -18,8 +18,6 @@
       piPkg = helpers.wrapAgent llmPkgs.pi (
         with pkgs;
         [
-          bash
-          coreutils
           nodejs
           pnpm
           wl-clipboard

@@ -11,7 +11,9 @@
     }:
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-      jail = inputs.jail-nix.lib.init pkgs;
+      jail = inputs.jail-nix.lib.extend {
+        inherit pkgs;
+      };
 
       helpers = self.lib.jailHelpers pkgs pkgs.lib;
       inherit (helpers) mkJailedDesktop;
