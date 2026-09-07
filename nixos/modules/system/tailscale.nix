@@ -1,12 +1,14 @@
 {
-  flake.nixosModules.tailscale = {
+  flake.nixosModules.tailscale = { config, ... }: {
     persistence.directories = [
       "/var/lib/tailscale"
     ];
 
+    networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
+
     services.tailscale = {
       enable = true;
-      openFirewall = true; # Automatically manages ports and trusted interfaces natively
+      openFirewall = true;
       extraSetFlags = [ "--operator=kdj" ];
     };
   };

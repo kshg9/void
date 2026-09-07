@@ -31,18 +31,6 @@
           unsafe-dbus
           open-urls-in-browser
 
-          (add-pkg-deps (
-            with pkgs;
-            [
-              bash
-              coreutils
-              gnused
-              git
-              ripgrep
-              python3
-            ]
-          ))
-
           (try-readwrite "/tmp")
 
           (try-readwrite (noescape "~/Projects"))
@@ -60,18 +48,6 @@
           gpu
           unsafe-dbus
           open-urls-in-browser
-
-          (add-pkg-deps (
-            with pkgs;
-            [
-              bash
-              coreutils
-              gnused
-              git
-              ripgrep
-              python3
-            ]
-          ))
 
           (try-readwrite "/tmp")
 

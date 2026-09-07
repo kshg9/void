@@ -18,7 +18,6 @@
 
       users.users.${user} = {
         extraGroups = [
-          "libvirtd"
           "lp"
           "lpadmin"
         ];

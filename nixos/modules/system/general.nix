@@ -19,6 +19,7 @@
         changepass
         btop
         binutils
+        gcc
 
         nixd
         statix
@@ -29,13 +30,12 @@
         pciutils
         psmisc
 
-        neovim
-        helix
+        gnome-text-editor
         junction
       ];
 
       environment.variables = {
-        EDITOR = "hx";
+        EDITOR = "nvim";
         BROWSER = "xdg-open";
       };
 
@@ -71,7 +71,7 @@
       };
 
       hardware = {
-        enableAllFirmware = true;
+        enableRedistributableFirmware = true;
         bluetooth.enable = true;
         bluetooth.powerOnBoot = false;
       };

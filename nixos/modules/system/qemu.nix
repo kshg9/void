@@ -1,6 +1,6 @@
 {
   flake.nixosModules.qemu = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [ virt-manager ];
+    environment.systemPackages = with pkgs; [ gnome-boxes ];
 
     virtualisation = {
       libvirtd.enable = true;
@@ -13,6 +13,5 @@
     };
 
     networking.firewall.trustedInterfaces = [ "virbr0" ];
-    programs.dconf.enable = true;
   };
 }

@@ -15,18 +15,9 @@
 
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      dshPkg = helpers.wrapAgent llmPkgs.dsh (
-        with pkgs;
-        [
-          bash
-          nodejs
-          pnpm
-          wl-clipboard
-        ]
-      );
       agent-runtime = helpers.agentRuntime jail;
 
-      dshJailed = jail "dsh" dshPkg (
+      dshJailed = jail "dsh" llmPkgs.dsh (
         with jail.combinators;
         [
           network
@@ -35,8 +26,14 @@
 
           (try-readwrite (noescape "~/Projects"))
           (try-readwrite (noescape "~/Downloads"))
-
           agent-runtime
+          (add-pkg-deps (
+            with pkgs;
+            [
+              nodejs
+              pnpm
+            ]
+          ))
         ]
       );
     in
