@@ -24,6 +24,7 @@
           "wheel"
           "networkmanager"
           "libvirtd"
+          "kvm"
           "lp"
           "lpadmin"
         ];
@@ -59,6 +60,8 @@
           zk
           zeal
           jujutsu
+          helix
+          vscodium-fhs
 
           # CLI tools & utils
           socat
@@ -68,7 +71,6 @@
           sioyek
           thunderbird-bin
           librewolf-bin
-          gnome-text-editor
 
           # Recon
           rustscan

@@ -15,17 +15,9 @@
 
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      piPkg = helpers.wrapAgent llmPkgs.pi (
-        with pkgs;
-        [
-          nodejs
-          pnpm
-          wl-clipboard
-        ]
-      );
       agent-runtime = helpers.agentRuntime jail;
 
-      piJailed = jail "pi" piPkg (
+      piJailed = jail "pi" llmPkgs.pi (
         with jail.combinators;
         [
           network
@@ -34,8 +26,14 @@
 
           (try-readwrite (noescape "~/Projects"))
           (try-readwrite (noescape "~/Downloads"))
-
           agent-runtime
+          (add-pkg-deps (
+            with pkgs;
+            [
+              nodejs
+              pnpm
+            ]
+          ))
         ]
       );
     in

@@ -20,6 +20,7 @@
         self.nixosModules.base
         self.nixosModules.nixpkgsConfig
         self.nixosModules.general
+        self.nixosModules.neovim
         self.nixosModules.desktop
         self.nixosModules.nixTools
         self.nixosModules.impermanence

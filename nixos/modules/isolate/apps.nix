@@ -15,13 +15,13 @@
       helpers = self.lib.jailHelpers pkgs pkgs.lib;
       inherit (helpers) mkJailedDesktop;
 
-      chromePkg = pkgs.google-chrome;
       vesktopPkg = pkgs.vesktop;
+      bravePkg = pkgs.brave-origin;
 
-      chromeJailed = jail "chrome" chromePkg (
+      braveJailed = jail "brave" bravePkg (
         with jail.combinators;
         [
-          (persist-home "chrome")
+          (persist-home "brave")
           network
           gui
           gpu
@@ -55,7 +55,7 @@
     in
     {
       environment.systemPackages = [
-        (mkJailedDesktop chromeJailed chromePkg)
+        (mkJailedDesktop braveJailed bravePkg)
         (mkJailedDesktop vesktopJailed vesktopPkg)
       ];
     };

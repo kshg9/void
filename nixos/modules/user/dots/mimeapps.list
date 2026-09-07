@@ -1,10 +1,6 @@
 [Default Applications]
-x-scheme-handler/http=junction.desktop;re.sonny.Junction.desktop
-x-scheme-handler/https=junction.desktop;re.sonny.Junction.desktop
-text/html=junction.desktop;re.sonny.Junction.desktop
-x-scheme-handler/about=junction.desktop;re.sonny.Junction.desktop
-x-scheme-handler/unknown=junction.desktop;re.sonny.Junction.desktop
+x-scheme-handler/http=re.sonny.Junction.desktop
+x-scheme-handler/https=re.sonny.Junction.desktop
+text/html=re.sonny.Junction.desktop
+application/xhtml+xml=re.sonny.Junction.desktop
 application/epub+zip=sioyek.desktop
-
-[Added Associations]
-x-scheme-handler/https=google-chrome.desktop;
