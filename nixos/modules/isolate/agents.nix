@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-agents =
+  flake.hjemModules.isolate-agents =
     {
       pkgs,
       ...
@@ -17,6 +17,7 @@
 
       helpers = self.lib.jailHelpers pkgs pkgs.lib;
       inherit (helpers) mkJailedDesktop;
+      agent-runtime = helpers.agentRuntime jail;
 
       claudePkg = llmPkgs.claude-desktop;
       chatgptPkg = llmPkgs.chatgpt;
@@ -30,6 +31,7 @@
           gpu
           unsafe-dbus
           open-urls-in-browser
+          agent-runtime
 
           (try-readwrite "/tmp")
 
@@ -48,6 +50,7 @@
           gpu
           unsafe-dbus
           open-urls-in-browser
+          agent-runtime
 
           (try-readwrite "/tmp")
 
@@ -58,7 +61,7 @@
       );
     in
     {
-      environment.systemPackages = [
+      packages = [
         (mkJailedDesktop claudeJailed claudePkg)
         (mkJailedDesktop chatgptJailed chatgptPkg)
       ];

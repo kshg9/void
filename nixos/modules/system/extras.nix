@@ -8,8 +8,9 @@
         vicinae.enable = lib.mkEnableOption "the vicinae CLI";
         emacs.enable = lib.mkEnableOption "the Emacs editor";
         lanzaboote.enable = lib.mkEnableOption "Secure Boot using lanzaboote";
-        rust.enable = lib.mkEnableOption "Rust toolchain using fenix";
         devel.enable = lib.mkEnableOption "C/C++ dev and debugging tools";
+        container.enable = lib.mkEnableOption "containerization options";
+        android.enable = lib.mkEnableOption "Android & Java development tools";
       };
 
       imports = [
@@ -17,8 +18,9 @@
         self.nixosModules.vicinae
         self.nixosModules.emacs
         self.nixosModules.lanzaboote
-        self.nixosModules.rust
         self.nixosModules.devel
+        self.nixosModules.container
+        self.nixosModules.android
       ];
     };
 }

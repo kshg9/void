@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-apps =
+  flake.hjemModules.isolate-apps =
     {
       pkgs,
       ...
@@ -54,7 +54,7 @@
       );
     in
     {
-      environment.systemPackages = [
+      packages = [
         (mkJailedDesktop braveJailed bravePkg)
         (mkJailedDesktop vesktopJailed vesktopPkg)
       ];

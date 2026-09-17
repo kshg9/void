@@ -57,11 +57,6 @@
     jail-nix = {
       url = "sourcehut:~alexdavid/jail.nix";
     };
-
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =

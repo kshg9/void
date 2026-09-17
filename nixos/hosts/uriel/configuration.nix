@@ -44,12 +44,12 @@
       ];
 
       extras = {
-        lanzaboote.enable = true;
-        vicinae.enable = true;
-        nvidia.enable = true;
-        emacs.enable = true;
-        rust.enable = true;
         devel.enable = true;
+        emacs.enable = true;
+        lanzaboote.enable = true;
+        nvidia.enable = true;
+        vicinae.enable = true;
+        android.enable = true;
       };
 
       desktop.configNiri.enable = true;
@@ -65,7 +65,7 @@
 
       systemd.sleep.settings = {
         Sleep = {
-          HibernateDelaySec = "1h";
+          HibernateDelaySec = "15m";
         };
       };
 
@@ -74,10 +74,15 @@
 
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
-      # Memory optimizations (tmpfs and zram)
+      # Memory optimizations
       boot.tmp.useTmpfs = true;
-      zramSwap.enable = true;
-      boot.kernel.sysctl."vm.swappiness" = 100;
+
+      boot.kernelParams = [
+        "zswap.enabled=1"
+        "zswap.compressor=zstd"
+        "zswap.zpool=zsmalloc"
+        "zswap.max_pool_percent=20"
+      ];
 
       networking.hostName = "uriel";
       networking.networkmanager.enable = true;
