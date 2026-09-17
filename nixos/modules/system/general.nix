@@ -19,7 +19,7 @@
         changepass
         btop
         binutils
-        gcc
+        vis
 
         nixd
         statix
@@ -35,13 +35,17 @@
       ];
 
       environment.variables = {
-        EDITOR = "nvim";
+        EDITOR = "vis";
         BROWSER = "xdg-open";
       };
 
       time.timeZone = "Asia/Kolkata";
 
       services.fwupd.enable = true;
+      system.serviceRegistry.fwupd = {
+        unit = "fwupd";
+        state.directories = [ "fwupd" ];
+      };
 
       i18n.defaultLocale = "en_US.UTF-8";
       i18n.extraLocaleSettings = {
@@ -65,8 +69,8 @@
         enable = true;
         settings = {
           # 1 -> caps at 60%, 0 -> 100%
-          START_CHARGE_THRESH_BAT0 = "0";
-          STOP_CHARGE_THRESH_BAT0 = "1";
+          START_CHARGE_THRESH_BAT1 = "0";
+          STOP_CHARGE_THRESH_BAT1 = "1";
         };
       };
 

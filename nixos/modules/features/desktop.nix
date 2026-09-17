@@ -11,6 +11,7 @@
         self.nixosModules.pipewire
         self.nixosModules.noctalia
         self.nixosModules.desktop-niri
+        self.nixosModules.swayidle
       ];
 
       options.desktop = {

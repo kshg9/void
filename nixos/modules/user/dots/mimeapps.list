@@ -4,3 +4,4 @@ x-scheme-handler/https=re.sonny.Junction.desktop
 text/html=re.sonny.Junction.desktop
 application/xhtml+xml=re.sonny.Junction.desktop
 application/epub+zip=sioyek.desktop
+application/pdf=sioyek.desktop

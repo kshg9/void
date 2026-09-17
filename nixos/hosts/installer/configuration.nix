@@ -42,7 +42,7 @@
         inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
         pkgs.helix
         pkgs.tmux
-        pkgs.neovim
+        pkgs.vis
         pkgs.changepass
 
         # One-shot installer script natively wrapped
