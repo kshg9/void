@@ -13,8 +13,8 @@
         (self.userBase user)
         self.nixosModules.isolate-agents
         self.nixosModules.isolate-agy
-        self.nixosModules.isolate-pi
-        self.nixosModules.isolate-dsh
+        self.nixosModules.isolate-cursor
+        self.nixosModules.isolate-opencode
         self.nixosModules.isolate-apps
       ];
 

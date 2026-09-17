@@ -74,10 +74,15 @@
 
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
-      # Memory optimizations (tmpfs and zram)
+      # Memory optimizations
       boot.tmp.useTmpfs = true;
-      zramSwap.enable = true;
-      boot.kernel.sysctl."vm.swappiness" = 100;
+
+      boot.kernelParams = [
+        "zswap.enabled=1"
+        "zswap.compressor=zstd"
+        "zswap.zpool=zsmalloc"
+        "zswap.max_pool_percent=20"
+      ];
 
       networking.hostName = "uriel";
       networking.networkmanager.enable = true;

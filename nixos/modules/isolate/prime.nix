@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-dsh =
+  flake.nixosModules.isolate-opencode =
     {
       pkgs,
       lib,
@@ -17,12 +17,12 @@
 
       agent-runtime = helpers.agentRuntime jail;
 
-      dshJailed = jail "dsh" llmPkgs.dsh (
+      opencodeJailed = jail "opencode" llmPkgs.opencode (
         with jail.combinators;
         [
           network
           gui
-          (persist-home "dsh")
+          (persist-home "opencode")
 
           (try-readwrite (noescape "~/Projects"))
           (try-readwrite (noescape "~/Downloads"))
@@ -38,6 +38,6 @@
       );
     in
     {
-      environment.systemPackages = [ dshJailed ];
+      environment.systemPackages = [ opencodeJailed ];
     };
 }
