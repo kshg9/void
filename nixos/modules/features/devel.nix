@@ -19,6 +19,15 @@
 
           man-pages
           man-pages-posix
+
+          rustup
+          gcc
+          gdb
+          gnumake
+
+          clang
+          clang-tools
+          clang-manpages
         ];
 
         documentation = {

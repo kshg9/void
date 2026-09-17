@@ -11,11 +11,6 @@
     {
       imports = [
         (self.userBase user)
-        self.nixosModules.isolate-agents
-        self.nixosModules.isolate-agy
-        self.nixosModules.isolate-pi
-        self.nixosModules.isolate-dsh
-        self.nixosModules.isolate-apps
       ];
 
       users.users.${user} = {
@@ -42,6 +37,11 @@
       hjem.users.${user} = {
         imports = [
           self.hjemModules.gtk
+          self.hjemModules.isolate-apps
+          self.hjemModules.isolate-agents
+          self.hjemModules.isolate-agy
+          self.hjemModules.isolate-cursor
+          self.hjemModules.isolate-opencode
         ];
 
         programs.noctalia.settings.include.files = [
@@ -49,8 +49,8 @@
         ];
 
         packages = with pkgs; [
-          #obsidian
           #anki-bin
+          yt-dlp
           qbittorrent
           rclone
           gh
@@ -66,13 +66,14 @@
           # CLI tools & utils
           socat
           treefmt
+          shfmt
 
           # Apps
           sioyek
           thunderbird-bin
           librewolf-bin
 
-          # Recon
+          # Misc
           rustscan
         ];
       };

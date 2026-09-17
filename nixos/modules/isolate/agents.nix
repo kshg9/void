@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-agents =
+  flake.hjemModules.isolate-agents =
     {
       pkgs,
       ...
@@ -58,7 +58,7 @@
       );
     in
     {
-      environment.systemPackages = [
+      packages = [
         (mkJailedDesktop claudeJailed claudePkg)
         (mkJailedDesktop chatgptJailed chatgptPkg)
       ];

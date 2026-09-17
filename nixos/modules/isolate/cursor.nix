@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-pi =
+  flake.hjemModules.isolate-cursor =
     {
       pkgs,
       lib,
@@ -12,17 +12,16 @@
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
       jail = inputs.jail-nix.lib.init pkgs;
-
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
       agent-runtime = helpers.agentRuntime jail;
 
-      piJailed = jail "pi" llmPkgs.pi (
+      cursorJailed = jail "cursor" llmPkgs.cursor-agent (
         with jail.combinators;
         [
           network
           gui
-          (persist-home "pi")
+          (persist-home "cursor")
 
           (try-readwrite (noescape "~/Projects"))
           (try-readwrite (noescape "~/Downloads"))
@@ -30,14 +29,15 @@
           (add-pkg-deps (
             with pkgs;
             [
-              nodejs
-              pnpm
+              eza
+              fd
+              python3
             ]
           ))
         ]
       );
     in
     {
-      environment.systemPackages = [ piJailed ];
+      packages = [ cursorJailed ];
     };
 }

@@ -19,7 +19,6 @@
         changepass
         btop
         binutils
-        gcc
 
         nixd
         statix
@@ -65,8 +64,8 @@
         enable = true;
         settings = {
           # 1 -> caps at 60%, 0 -> 100%
-          START_CHARGE_THRESH_BAT0 = "0";
-          STOP_CHARGE_THRESH_BAT0 = "1";
+          START_CHARGE_THRESH_BAT1 = "0";
+          STOP_CHARGE_THRESH_BAT1 = "1";
         };
       };
 

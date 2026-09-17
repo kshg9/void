@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-agy =
+  flake.hjemModules.isolate-agy =
     {
       pkgs,
       lib,
@@ -31,12 +31,13 @@
             [
               eza
               fd
+              python3
             ]
           ))
         ]
       );
     in
     {
-      environment.systemPackages = [ agyJailed ];
+      packages = [ agyJailed ];
     };
 }

@@ -14,6 +14,7 @@
       AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
       AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
       CARGO_HOME = "$XDG_DATA_HOME/cargo";
+      RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
       GOPATH = "$XDG_DATA_HOME/go";
       GRADLE_USER_HOME = "$XDG_DATA_HOME/gradle";
       HISTFILE = "$XDG_STATE_HOME/bash/history"; # For bash (if ever used)
