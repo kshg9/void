@@ -39,7 +39,6 @@ window-rule {
     }
 }
 spawn-at-startup "noctalia"
-spawn-at-startup "vicinae" "server"
 binds {
     Mod+Shift+Slash {
         show-hotkey-overlay
@@ -48,10 +47,10 @@ binds {
         spawn "kitty"
     }
     Mod+Space {
-        spawn-sh "vicinae toggle"
+        spawn-sh "noctalia msg panel-toggle launcher"
     }
     Mod+P repeat=false {
-        spawn "vicinae" "vicinae://launch/clipboard/history"
+        spawn-sh "noctalia msg panel-toggle clipboard"
     }
     Mod+S {
         spawn-sh "noctalia msg panel-toggle control-center"

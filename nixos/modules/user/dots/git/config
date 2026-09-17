@@ -18,6 +18,7 @@
 		path = ~/.config/git/config.github
 
 [includeIf "hasconfig:remote.*.url:*codeberg.org*"]
+	path = ~/.config/git/config.vcs
 [includeIf "hasconfig:remote.*.url:*tangled.sh*"]
 	path = ~/.config/git/config.vcs
 

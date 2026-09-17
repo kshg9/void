@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosModules.isolate-apps =
+  flake.hjemModules.isolate-apps =
     {
       pkgs,
       ...
@@ -12,8 +12,7 @@
     let
       jail = inputs.jail-nix.lib.init pkgs;
 
-      helpers = self.lib.jailHelpers pkgs pkgs.lib;
-      inherit (helpers) mkJailedDesktop;
+      mkJailedDesktop = self.lib.mkJailedDesktop pkgs pkgs.lib;
 
       vesktopPkg = pkgs.vesktop;
       bravePkg = pkgs.brave-origin;
@@ -24,6 +23,7 @@
           (persist-home "brave")
           network
           gui
+          (add-pkg-deps [ pkgs.wl-clipboard ])
           gpu
           pipewire
           pulse
@@ -42,6 +42,7 @@
           (persist-home "vesktop")
           network
           gui
+          (add-pkg-deps [ pkgs.wl-clipboard ])
           gpu
           pipewire
           pulse
@@ -54,7 +55,7 @@
       );
     in
     {
-      environment.systemPackages = [
+      packages = [
         (mkJailedDesktop braveJailed bravePkg)
         (mkJailedDesktop vesktopJailed vesktopPkg)
       ];

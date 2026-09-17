@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.hjemModules.isolate-agy =
+  flake.hjemModules.isolate-cursor =
     {
       pkgs,
       lib,
@@ -14,9 +14,9 @@
       jail = inputs.jail-nix.lib.init pkgs;
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      agyJailed = jail "agy" llmPkgs.antigravity-cli [
+      cursorJailed = jail "cursor" llmPkgs.cursor-agent [
         (helpers.cliAgent jail {
-          name = "agy";
+          name = "cursor";
           runtimePackages = with pkgs; [
             eza
             fd
@@ -26,6 +26,6 @@
       ];
     in
     {
-      packages = [ agyJailed ];
+      packages = [ cursorJailed ];
     };
 }

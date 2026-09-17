@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.hjemModules.isolate-agy =
+  flake.hjemModules.isolate-codex =
     {
       pkgs,
       lib,
@@ -14,18 +14,17 @@
       jail = inputs.jail-nix.lib.init pkgs;
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      agyJailed = jail "agy" llmPkgs.antigravity-cli [
+      codexPkg = llmPkgs.codex;
+
+      codexJailed = jail "codex" codexPkg [
         (helpers.cliAgent jail {
-          name = "agy";
-          runtimePackages = with pkgs; [
-            eza
-            fd
-            python3
-          ];
+          name = "codex";
+          background = true;
+          runtimePackages = [ pkgs.bubblewrap ];
         })
       ];
     in
     {
-      packages = [ agyJailed ];
+      packages = [ codexJailed ];
     };
 }

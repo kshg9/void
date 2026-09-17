@@ -15,6 +15,11 @@
         generateKey = true;
       };
 
+      system.serviceRegistry.sops = {
+        unit = "sops-install-secrets";
+        state.paths = [ "/var/lib/sops-nix" ];
+      };
+
       environment.systemPackages = with pkgs; [
         sops
         age

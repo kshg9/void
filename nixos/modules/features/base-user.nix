@@ -22,6 +22,7 @@
         yazi
 
         # Misc Utilities
+        xdg-user-dirs
         ffmpeg
         _7zz
         poppler-utils

@@ -1,8 +1,10 @@
 {
   flake.nixosModules.tailscale = { config, ... }: {
-    persistence.directories = [
-      "/var/lib/tailscale"
-    ];
+    system.serviceRegistry.tailscale = {
+      unit = "tailscaled";
+      # The packaged unit is not part of config.systemd.services discovery.
+      state.directories = [ "tailscale" ];
+    };
 
     networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
 

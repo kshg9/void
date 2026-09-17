@@ -41,7 +41,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vicinae.url = "github:vicinaehq/vicinae";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     lanzaboote = {
@@ -56,11 +55,6 @@
 
     jail-nix = {
       url = "sourcehut:~alexdavid/jail.nix";
-    };
-
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -79,6 +73,7 @@
     mkFlake {
       imports =
         importTree ./nixos/hosts
+        ++ importTree ./nixos/lib
         ++ importTree ./nixos/modules
         ++ importTree ./packages
         ++ [ inputs.disko.flakeModules.default ];

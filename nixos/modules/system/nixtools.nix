@@ -51,7 +51,7 @@
       enable = true;
       clean = {
         enable = true;
-        extraArgs = "--keep 10 --keep-since 3d";
+        extraArgs = "--no-direnv --keep 10 --keep-since 3d";
       };
       flake = "/etc/nixos/void";
     };

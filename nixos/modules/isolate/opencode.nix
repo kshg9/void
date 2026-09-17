@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.hjemModules.isolate-agy =
+  flake.hjemModules.isolate-opencode =
     {
       pkgs,
       lib,
@@ -12,20 +12,21 @@
     let
       llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
       jail = inputs.jail-nix.lib.init pkgs;
+
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      agyJailed = jail "agy" llmPkgs.antigravity-cli [
+      opencodeJailed = jail "opencode" llmPkgs.opencode2 [
         (helpers.cliAgent jail {
-          name = "agy";
+          name = "opencode";
           runtimePackages = with pkgs; [
-            eza
-            fd
+            nodejs
+            pnpm
             python3
           ];
         })
       ];
     in
     {
-      packages = [ agyJailed ];
+      packages = [ opencodeJailed ];
     };
 }
