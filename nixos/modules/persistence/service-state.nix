@@ -18,6 +18,14 @@
             if cfg.enable && cfg.serviceState.enable then state.directories else [ ];
         }
         (lib.mkIf (cfg.enable && cfg.serviceState.enable) {
+          assertions = map (conflict: {
+            assertion = false;
+            message = ''
+              persistence.serviceState.excludePaths cannot exclude ${conflict.excludedPath}
+              while automatically persisting its parent ${conflict.directory}.
+              Exclude the parent and explicitly persist the subdirectories you want to keep.
+            '';
+          }) state.conflictingExclusions;
           warnings = map (
             entry:
             "State path not automatically persisted (${entry}); add an explicit persistence.directories entry if needed."

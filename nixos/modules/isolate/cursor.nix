@@ -14,7 +14,7 @@
       jail = inputs.jail-nix.lib.init pkgs;
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      cursorJailed = jail "cursor" llmPkgs.cursor-agent [
+      cursorJailed = helpers.mkCli jail "cursor" llmPkgs.cursor-agent [
         (helpers.cliAgent jail {
           name = "cursor";
           runtimePackages = with pkgs; [

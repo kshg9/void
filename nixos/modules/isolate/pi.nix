@@ -16,7 +16,7 @@
 
       piPkg = llmPkgs.pi;
 
-      piJailed = jail "pi" piPkg [
+      piJailed = helpers.mkCli jail "pi" piPkg [
         (helpers.cliAgent jail {
           name = "pi";
           background = true;

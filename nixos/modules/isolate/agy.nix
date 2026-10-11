@@ -14,7 +14,7 @@
       jail = inputs.jail-nix.lib.init pkgs;
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      agyJailed = jail "agy" llmPkgs.antigravity-cli [
+      agyJailed = helpers.mkCli jail "agy" llmPkgs.antigravity-cli [
         (helpers.cliAgent jail {
           name = "agy";
           runtimePackages = with pkgs; [

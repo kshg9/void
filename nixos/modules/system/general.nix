@@ -42,10 +42,6 @@
       time.timeZone = "Asia/Kolkata";
 
       services.fwupd.enable = true;
-      system.serviceRegistry.fwupd = {
-        unit = "fwupd";
-        state.directories = [ "fwupd" ];
-      };
 
       i18n.defaultLocale = "en_US.UTF-8";
       i18n.extraLocaleSettings = {

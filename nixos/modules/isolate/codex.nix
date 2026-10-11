@@ -16,7 +16,7 @@
 
       codexPkg = llmPkgs.codex;
 
-      codexJailed = jail "codex" codexPkg [
+      codexJailed = helpers.mkCli jail "codex" codexPkg [
         (helpers.cliAgent jail {
           name = "codex";
           background = true;

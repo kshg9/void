@@ -15,7 +15,7 @@
 
       helpers = inputs.self.lib.jailHelpers pkgs lib;
 
-      opencodeJailed = jail "opencode" llmPkgs.opencode2 [
+      opencodeJailed = helpers.mkCli jail "opencode" llmPkgs.opencode2 [
         (helpers.cliAgent jail {
           name = "opencode";
           runtimePackages = with pkgs; [
