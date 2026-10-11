@@ -16,9 +16,7 @@
     "files.autoSaveDelay": 1000,
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
-    "workbench.iconTheme": "vscode-icons",
     "git.openRepositoryInParentFolders": "never",
-    "vsicons.dontShowNewVersionMessage": true,
     "workbench.sideBar.location": "right",
     "search.exclude": {
         "**/node_modules": true
@@ -28,6 +26,5 @@
     "chat.disableAIFeatures": true,
     "js/ts.experimental.useTsgo": true,
     "explorer.confirmDragAndDrop": false,
-    "nix.enableLanguageServer": true,
-    "nix.serverPath": "nixd"
+    "editor.experimental.preferTreeSitter": true
 }

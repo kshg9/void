@@ -13,7 +13,7 @@
         kitty
         nautilus
         mpv
-        librewolf-bin
+        firefox
       ];
     };
 }

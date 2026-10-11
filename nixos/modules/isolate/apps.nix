@@ -15,12 +15,12 @@
       mkJailedDesktop = self.lib.mkJailedDesktop pkgs pkgs.lib;
 
       vesktopPkg = pkgs.vesktop;
-      bravePkg = pkgs.brave-origin;
+      chromiumPkg = pkgs.chromium;
 
-      braveJailed = jail "brave" bravePkg (
+      chromiumJailed = jail "chromium" chromiumPkg (
         with jail.combinators;
         [
-          (persist-home "brave")
+          (persist-home "chromium")
           network
           gui
           (add-pkg-deps [ pkgs.wl-clipboard ])
@@ -31,6 +31,7 @@
           camera
 
           (try-readwrite (noescape "~/Downloads"))
+          (try-readwrite (noescape "~/Documents"))
           (try-readwrite (noescape "~/Pictures"))
           (try-readwrite "/tmp")
         ]
@@ -50,13 +51,14 @@
           camera
 
           (try-readwrite (noescape "~/Downloads"))
+          (try-readwrite (noescape "~/Documents"))
           (try-readwrite (noescape "~/Pictures"))
         ]
       );
     in
     {
       packages = [
-        (mkJailedDesktop braveJailed bravePkg)
+        (mkJailedDesktop chromiumJailed chromiumPkg)
         (mkJailedDesktop vesktopJailed vesktopPkg)
       ];
     };

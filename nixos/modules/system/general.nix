@@ -19,7 +19,6 @@
         changepass
         btop
         binutils
-        vis
 
         nixd
         statix
@@ -34,18 +33,9 @@
         junction
       ];
 
-      environment.variables = {
-        EDITOR = "vis";
-        BROWSER = "xdg-open";
-      };
-
       time.timeZone = "Asia/Kolkata";
 
       services.fwupd.enable = true;
-      system.serviceRegistry.fwupd = {
-        unit = "fwupd";
-        state.directories = [ "fwupd" ];
-      };
 
       i18n.defaultLocale = "en_US.UTF-8";
       i18n.extraLocaleSettings = {
@@ -61,6 +51,19 @@
       };
 
       programs.fish.enable = true;
+      environment.variables = {
+        BROWSER = "xdg-open";
+      };
+
+      # TPM2 userspace.
+      security.tpm2 = {
+        enable = true;
+        abrmd.enable = true;
+        tctiEnvironment = {
+          enable = true;
+          interface = "tabrmd";
+        };
+      };
 
       services.upower.enable = true;
       security.polkit.enable = true;

@@ -40,30 +40,10 @@
           (try-readwrite (noescape "~/Downloads"))
         ]
       );
-
-      chatgptJailed = jail "chatgpt" chatgptPkg (
-        with jail.combinators;
-        [
-          agent-runtime
-          (persist-home "chatgpt")
-          network
-          gui
-          gpu
-          unsafe-dbus
-          open-urls-in-browser
-
-          (try-readwrite "/tmp")
-
-          (try-readwrite (noescape "~/Projects"))
-          (try-readwrite (noescape "~/Documents"))
-          (try-readwrite (noescape "~/Downloads"))
-        ]
-      );
     in
     {
       packages = [
         (mkJailedDesktop claudeJailed claudePkg)
-        (mkJailedDesktop chatgptJailed chatgptPkg)
       ];
 
     };

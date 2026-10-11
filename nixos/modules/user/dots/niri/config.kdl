@@ -27,7 +27,6 @@ window-rule {
 }
 window-rule {
     match app-id="^google-chrome"
-    match app-id="^librewolf$"
     match app-id="firefox$"
     geometry-corner-radius 8 8 0 0
 }

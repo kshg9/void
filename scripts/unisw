@@ -1,0 +1,374 @@
+"""unisw - universal account switcher.
+
+Snaps app data directories into a per-profile vault using atomic renames and
+symlink swaps. Config lives at $XDG_CONFIG_HOME/unisw/config.toml:
+
+    ["app-name"]
+    paths = ["/abs/path", ...]        # dirs or managed symlinks
+    before_change = ["cmd", "arg"]    # optional: stops a running instance
+
+Vault layout: $XDG_DATA_HOME/unisw/vault/<app>/<profile>/path_<i>.
+"""
+
+import argparse
+import errno
+import os
+import shutil
+import stat
+import subprocess
+import sys
+import tomllib
+import uuid
+from contextlib import contextmanager
+from pathlib import Path
+
+
+class UniswError(Exception):
+    pass
+
+
+@contextmanager
+def transaction():
+    """Run steps with rollback in reverse order on failure."""
+    undone = []
+
+    def step(action, undo):
+        action()
+        undone.append(undo)
+
+    try:
+        yield step
+    except BaseException:
+        for undo in reversed(undone):
+            try:
+                undo()
+            except Exception as e:
+                print(f"warning: rollback step failed: {e}", file=sys.stderr)
+        raise
+
+
+def env_dir(name, *default):
+    value = os.environ.get(name)
+    return Path(value) if value else Path.home().joinpath(*default)
+
+
+def ensure_valid(value, kind):
+    if not value or value in {".", ".."} or Path(value).name != value:
+        raise UniswError(f"Bad {kind} {value!r}: must be one path component")
+    return value
+
+
+def vault_base():
+    return env_dir("XDG_DATA_HOME", ".local", "share") / "unisw" / "vault"
+
+
+def vault(profile, app):
+    return (
+        vault_base()
+        / ensure_valid(app, "app name")
+        / ensure_valid(profile, "profile")
+    )
+
+
+def load_config():
+    path = env_dir("XDG_CONFIG_HOME", ".config") / "unisw" / "config.toml"
+    if not path.is_file():
+        raise UniswError(f"Config file not found: {path} (create it manually)")
+    with path.open("rb") as file:
+        return tomllib.load(file)
+
+
+def app_paths(config, app):
+    section = config.get(app)
+    values = section.get("paths") if isinstance(section, dict) else None
+    if not isinstance(values, list) or not values:
+        raise UniswError(f"{app!r} needs a non-empty paths array")
+    paths = []
+    for value in values:
+        if not (isinstance(value, str) and value):
+            raise UniswError(
+                f"{app!r}: paths entries must be non-empty strings"
+            )
+        path = Path(os.path.normpath(Path(value).expanduser()))
+        if not path.is_absolute():
+            raise UniswError(f"{app!r}: path must be absolute: {value!r}")
+        if any(
+            path.is_relative_to(o) or o.is_relative_to(path) for o in paths
+        ):
+            raise UniswError(f"{app!r}: paths overlap: {path}")
+        paths.append(path)
+    return paths
+
+
+def managed(path):
+    """Vault path if `path` is a symlink into the vault, else None."""
+    if not path.is_symlink():
+        return None
+    try:
+        target = path.resolve(strict=True)
+    except OSError:
+        return None
+    if target.is_dir() and target.is_relative_to(
+        vault_base().resolve(strict=False)
+    ):
+        return target
+    return None
+
+
+def raw_targets(paths):
+    """Yield paths holding plain unsaved directories, refusing odd symlinks."""
+    for path in paths:
+        if path.is_symlink():
+            if managed(path) is None:
+                raise UniswError(f"Refusing symlink at {path}")
+        elif path.exists():
+            if not path.is_dir():
+                raise UniswError(f"Expected a directory: {path}")
+            yield path
+
+
+def active_profile(app, config):
+    """Profile name currently owning the app's managed paths, else None."""
+    try:
+        paths = app_paths(config, app)
+    except UniswError:
+        return None
+    for path in paths:
+        if (target := managed(path)) is not None:
+            return target.parent.name
+    return None
+
+
+def link_to(path, target):
+    """Atomically point `path` at `target` via a transient symlink rename."""
+
+    def run():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        transient = path.with_name(f".{path.name}.unisw-{uuid.uuid4().hex}")
+        try:
+            transient.symlink_to(target, target_is_directory=True)
+            transient.replace(path)
+        finally:
+            if transient.is_symlink():
+                transient.unlink()
+
+    return run
+
+
+def before_change(app, config):
+    command = config.get(app, {}).get("before_change")
+    if command is None:
+        return None
+    if (
+        not isinstance(command, list)
+        or not command
+        or any(not isinstance(a, str) or not a for a in command)
+    ):
+        raise UniswError(
+            f"{app!r}: before_change must be a non-empty command array"
+        )
+    try:
+        subprocess.run(
+            command, check=True, timeout=30, stdin=subprocess.DEVNULL
+        )
+    except (OSError, subprocess.SubprocessError) as err:
+        raise UniswError(
+            f"{app!r}: before-change command failed: {err}"
+        ) from err
+
+
+def execute_new(args):
+    config = load_config()
+    paths = app_paths(config, args.app)
+    raw = list(raw_targets(paths))
+    if raw and input(f"Delete unsaved data at {raw}? [y/N]: ").lower() != "y":
+        raise UniswError("Aborted; snatch the data first to preserve it")
+    before_change(args.app, config)
+    for path in paths:
+        if path.is_symlink():
+            path.unlink()
+        elif path.exists():
+            shutil.rmtree(
+                path,
+                onexc=lambda f, p, _: os.chmod(p, stat.S_IWRITE) or f(p),
+            )
+        path.parent.mkdir(parents=True, exist_ok=True)
+    print(f"Ready for a fresh {args.app!r} login")
+
+
+def execute_snatch(args):
+    config = load_config()
+    paths = app_paths(config, args.app)
+    vaultd = vault(args.profile, args.app)
+    if vaultd.exists() or vaultd.is_symlink():
+        raise UniswError(f"{args.profile!r} already exists for {args.app!r}")
+    for path in paths:
+        if path.is_symlink():
+            raise UniswError(f"Refusing symlink at {path}")
+        if path.exists() and not path.is_dir():
+            raise UniswError(f"Expected a directory: {path}")
+    before_change(args.app, config)
+    with transaction() as step:
+        step(lambda: vaultd.mkdir(parents=True), vaultd.rmdir)
+        for index, path in enumerate(paths):
+            slot = vaultd / f"path_{index}"
+
+            def move(path=path, slot=slot):
+                try:
+                    if path.exists() or path.is_symlink():
+                        path.rename(slot)
+                    else:
+                        slot.mkdir()
+                except OSError as err:
+                    if err.errno == errno.EXDEV:
+                        raise UniswError(
+                            f"Cannot snatch {path}: different filesystem "
+                            "than the vault; both must share one drive"
+                        ) from err
+                    raise
+
+            # rename() moves the directory entry; inner symlinks stay intact
+            step(move, lambda p=path, s=slot: s.rename(p))
+            step(
+                lambda p=path, s=slot: link_to(p, s)(),
+                lambda p=path: p.unlink() if p.is_symlink() else None,
+            )
+    print(f"Snatched {args.app!r} into {args.profile!r}")
+
+
+def execute_switch(args):
+    config = load_config()
+    paths = app_paths(config, args.app)
+    vaultd = vault(args.profile, args.app)
+    if not vaultd.is_dir() or vaultd.is_symlink():
+        raise UniswError(f"{args.profile!r} is missing or unsafe")
+    slots = [vaultd / f"path_{i}" for i in range(len(paths))]
+    if any(not slot.is_dir() or slot.is_symlink() for slot in slots):
+        raise UniswError(f"{args.profile!r} is incomplete or unsafe")
+    expected = {slot.name for slot in slots}
+    if (actual := {p.name for p in vaultd.iterdir()}) != expected:
+        raise UniswError(
+            f"{args.profile!r} doesn't match the current config: "
+            f"unexpected {sorted(actual - expected)}, "
+            f"missing {sorted(expected - actual)}"
+        )
+    for path in paths:
+        if path.is_symlink():
+            if managed(path) is None:
+                raise UniswError(f"Refusing symlink at {path}")
+        elif path.exists():
+            raise UniswError(
+                f"Unsaved data at {path}; snatch before switching"
+            )
+    if all(
+        path.is_symlink() and path.resolve() == slot.resolve()
+        for path, slot in zip(paths, slots)
+    ):
+        print(f"{args.profile!r} is already active for {args.app!r}")
+        return
+    before_change(args.app, config)
+    with transaction() as step:
+        for path, slot in zip(paths, slots):
+            old = path.readlink() if path.is_symlink() else None
+
+            def restore(path=path, old=old):
+                if path.is_symlink():
+                    path.unlink()
+                if old is not None:
+                    link_to(path, old)()
+
+            step(
+                lambda p=path, s=slot: link_to(p, s)(),
+                restore,
+            )
+    print(f"Switched {args.app!r} to {args.profile!r}")
+
+
+def execute_mv(args):
+    config = load_config()
+    paths = app_paths(config, args.app)
+    src = vault(args.old, args.app)
+    dst = vault(args.new, args.app)
+    if not src.is_dir() or src.is_symlink():
+        raise UniswError(f"{args.old!r} does not exist for {args.app!r}")
+    if dst.exists() or dst.is_symlink():
+        raise UniswError(f"{args.new!r} already exists for {args.app!r}")
+    for path in paths:
+        if (target := managed(path)) and target.is_relative_to(src.resolve()):
+            raise UniswError(
+                f"{args.old!r} is active; switch away before renaming"
+            )
+    src.rename(dst)
+    print(f"Renamed {args.old!r} to {args.new!r} for {args.app!r}")
+
+
+def execute_ls(args):
+    root = vault_base()
+    if not root.is_dir():
+        print("No profiles found")
+        return
+    try:
+        config = load_config()
+    except UniswError:
+        config = {}
+    if args.app:
+        ensure_valid(args.app, "app name")
+        roots = [root / args.app]
+    else:
+        roots = sorted(
+            d for d in root.iterdir() if d.is_dir() and not d.is_symlink()
+        )
+    seen = False
+    for directory in roots:
+        profiles = [
+            d.name
+            for d in directory.iterdir()
+            if d.is_dir() and not d.is_symlink()
+        ]
+        if not profiles:
+            continue
+        seen = True
+        active = active_profile(directory.name, config)
+        print(f"\n[{directory.name}]")
+        for profile in profiles:
+            marked = " [active]" if profile == active else ""
+            print(f"  - {profile}{marked}")
+    if not seen:
+        print("No profiles found")
+
+
+COMMANDS = {
+    "new": ("app", execute_new, "Clear paths for a fresh login"),
+    "snatch": (
+        "app profile",
+        execute_snatch,
+        "Snapshot current raw data as a profile",
+    ),
+    "switch": ("app profile", execute_switch, "Switch to a profile"),
+    "mv": ("app old new", execute_mv, "Rename a profile"),
+    "ls": ("[app]", execute_ls, "List profiles (all apps by default)"),
+}
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Universal Account Switcher")
+    commands = parser.add_subparsers(
+        dest="command", metavar="COMMAND", required=True
+    )
+    for name, (argspec, handler, help_) in COMMANDS.items():
+        sub = commands.add_parser(name, help=help_)
+        for spec in argspec.split():
+            argument = spec.strip("[]")
+            optional = "?" if spec.startswith("[") else None
+            sub.add_argument(argument, nargs=optional)
+        sub.set_defaults(handler=handler)
+    args = parser.parse_args()
+    try:
+        args.handler(args)
+    except (EOFError, OSError, tomllib.TOMLDecodeError, UniswError) as err:
+        print(f"Error: {err}", file=sys.stderr)
+        raise SystemExit(1) from err
+
+
+if __name__ == "__main__":
+    main()

@@ -44,7 +44,6 @@
 
       extras = {
         devel.enable = true;
-        emacs.enable = true;
         lanzaboote.enable = true;
         nvidia.enable = true;
         android.enable = true;
@@ -52,6 +51,14 @@
 
       desktop.configNiri.enable = true;
       services.fstrim.enable = true;
+
+      services.upower = {
+        usePercentageForPolicy = true;
+        percentageLow = 20;
+        percentageCritical = 10;
+        percentageAction = 5;
+        criticalPowerAction = "Hibernate";
+      };
 
       services.logind.settings = {
         Login = {
@@ -72,15 +79,21 @@
 
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
-      # Memory optimizations
       boot.tmp.useTmpfs = true;
+      boot.plymouth.enable = true;
+      boot.consoleLogLevel = 3;
 
       boot.kernelParams = [
+        "quiet"
+        "systemd.show_status=auto"
+        "rd.systemd.show_status=auto"
         "zswap.enabled=1"
         "zswap.compressor=zstd"
         "zswap.zpool=zsmalloc"
         "zswap.max_pool_percent=20"
       ];
+
+      systemd.settings.Manager.ShowStatus = "auto";
 
       networking.hostName = "uriel";
       networking.networkmanager.enable = true;

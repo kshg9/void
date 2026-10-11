@@ -31,6 +31,33 @@
     {
       inherit agentRuntime;
 
+      mkCli =
+        jail: name: package: permissions:
+        let
+          jailed = jail name package permissions;
+        in
+        pkgs.symlinkJoin {
+          name = "${name}-jailed";
+          paths = [ jailed ];
+          postBuild = ''
+            # Keep completion data discoverable without installing unwrapped binaries.
+            for completionDir in \
+              bash-completion \
+              fish/vendor_completions.d \
+              fish/vendor_functions.d \
+              zsh/site-functions; do
+              if [ -d "${package}/share/$completionDir" ]; then
+                mkdir -p "$out/share/$completionDir"
+                ${pkgs.lndir}/bin/lndir -silent \
+                  "${package}/share/$completionDir" "$out/share/$completionDir"
+              fi
+            done
+          '';
+          meta = (package.meta or { }) // {
+            mainProgram = name;
+          };
+        };
+
       cliAgent =
         jail:
         {

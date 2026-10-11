@@ -13,7 +13,6 @@
       nix-direnv.enable = true;
     };
 
-    nix.package = pkgs.lix;
     nix.settings = {
       experimental-features = [
         "nix-command"
@@ -51,7 +50,7 @@
       enable = true;
       clean = {
         enable = true;
-        extraArgs = "--no-direnv --keep 10 --keep-since 3d";
+        extraArgs = "--no-direnv --keep 8 --keep-since 3d";
       };
       flake = "/etc/nixos/void";
     };
