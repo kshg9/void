@@ -13,7 +13,6 @@
       nix-direnv.enable = true;
     };
 
-    nix.package = pkgs.lix;
     nix.settings = {
       experimental-features = [
         "nix-command"

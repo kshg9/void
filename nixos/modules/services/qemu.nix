@@ -2,11 +2,6 @@
   flake.nixosModules.qemu = {
     programs.virt-manager.enable = true;
 
-    system.serviceRegistry.libvirt = {
-      unit = "libvirtd-config";
-      state.directories = [ "libvirt" ];
-    };
-
     # systemd-creds uses this host key to decrypt libvirt's persisted credential.
     persistence.files = [ "/var/lib/systemd/credential.secret" ];
 

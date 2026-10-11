@@ -36,7 +36,8 @@
           lib.concatStringsSep "/" parts;
     in
     {
-      # First declaration wins, preserving explicit ownership and mode overrides.
+      # First declaration wins for duplicate paths. Keep attribute entries even
+      # beneath a persisted parent: their ownership and mode still matter.
       collapseDirectories =
         entries:
         let
@@ -46,7 +47,8 @@
         in
         lib.filter (
           entry:
-          !lib.any (other: pathOf other != pathOf entry && beneath (pathOf other) (pathOf entry)) unique
+          builtins.isAttrs entry
+          || !lib.any (other: pathOf other != pathOf entry && beneath (pathOf other) (pathOf entry)) unique
         ) unique;
 
       discoverState =
@@ -120,6 +122,15 @@
           );
           skipped = map (entry: "${entry.unit}: ${entry.token}") (
             lib.filter (entry: entry.path == null) parsed
+          );
+          conflictingExclusions = lib.unique (
+            lib.concatMap (
+              excludedPath:
+              map (entry: {
+                directory = entry.path;
+                inherit excludedPath;
+              }) (lib.filter (entry: entry.path != excludedPath && beneath entry.path excludedPath) included)
+            ) excludePaths
           );
         };
     };

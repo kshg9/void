@@ -16,7 +16,6 @@
 
       options.desktop = {
         configNiri.enable = lib.mkEnableOption "the Niri config (niri + noctalia bar + dotfiles)";
-        # configRiver.enable = lib.mkEnableOption # TODO Reka (Emacs + Wayland)
       };
 
       config = {

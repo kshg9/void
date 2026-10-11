@@ -44,7 +44,6 @@
 
       extras = {
         devel.enable = true;
-        emacs.enable = true;
         lanzaboote.enable = true;
         nvidia.enable = true;
         android.enable = true;
@@ -52,6 +51,14 @@
 
       desktop.configNiri.enable = true;
       services.fstrim.enable = true;
+
+      services.upower = {
+        usePercentageForPolicy = true;
+        percentageLow = 20;
+        percentageCritical = 10;
+        percentageAction = 5;
+        criticalPowerAction = "Hibernate";
+      };
 
       services.logind.settings = {
         Login = {

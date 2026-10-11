@@ -1,4 +1,5 @@
 {
+  inputs,
   self,
   ...
 }:
@@ -7,6 +8,11 @@
     { pkgs, config, ... }:
     let
       user = "kdj";
+      inherit (self.packages.${pkgs.stdenv.hostPlatform.system})
+        opencode
+        unisw
+        ;
+      llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
     in
     {
       imports = [
@@ -39,11 +45,6 @@
           self.hjemModules.gtk
           self.hjemModules.isolate-apps
           self.hjemModules.isolate-agents
-          self.hjemModules.isolate-agy
-          self.hjemModules.isolate-cursor
-          self.hjemModules.isolate-opencode
-          self.hjemModules.isolate-pi
-          self.hjemModules.isolate-codex
         ];
 
         programs.noctalia.settings.include.files = [
@@ -51,18 +52,31 @@
         ];
 
         packages = with pkgs; [
-          #anki-bin
+          # AI agents
+          llmPkgs.pi
+          llmPkgs.dsh
+          llmPkgs.herdr
+          opencode
+          unisw
+
+          bubblewrap
+          nodejs
+          pnpm
+          python3
+
           yt-dlp
+          ddgr
           qbittorrent
           rclone
           gh
 
           # dev
+          uv
           tmux
           zk
           zeal
           jujutsu
-          helix
+          neovim
           vscodium-fhs
 
           # CLI tools & utils
@@ -74,6 +88,7 @@
           sioyek
           thunderbird-bin
           librewolf-bin
+          libreoffice
         ];
       };
     };

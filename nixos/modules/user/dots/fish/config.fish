@@ -5,11 +5,11 @@ direnv hook fish | source
 
 alias cd="z"
 set -g fish_greeting ""
-alias cat="bat"
-alias find="fd"
 alias ll="eza --long"
 alias lt="eza --tree"
 alias icat="kitten icat"
+alias v="nvim"
+set -gx EDITOR nvim
 
 # Dim the autosuggestions (edge/suggestion) so they read as a ghost of
 # what's already typed instead of matching the live foreground.
