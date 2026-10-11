@@ -53,6 +53,14 @@
       desktop.configNiri.enable = true;
       services.fstrim.enable = true;
 
+      services.upower = {
+        usePercentageForPolicy = true;
+        percentageLow = 20;
+        percentageCritical = 10;
+        percentageAction = 5;
+        criticalPowerAction = "Hibernate";
+      };
+
       services.logind.settings = {
         Login = {
           HandleLidSwitch = "suspend-then-hibernate";

@@ -1,4 +1,5 @@
 {
+  inputs,
   self,
   ...
 }:
@@ -7,6 +8,7 @@
     { pkgs, config, ... }:
     let
       user = "kdj";
+      llmPkgs = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
     in
     {
       imports = [
@@ -39,11 +41,6 @@
           self.hjemModules.gtk
           self.hjemModules.isolate-apps
           self.hjemModules.isolate-agents
-          self.hjemModules.isolate-agy
-          self.hjemModules.isolate-cursor
-          self.hjemModules.isolate-opencode
-          self.hjemModules.isolate-pi
-          self.hjemModules.isolate-codex
         ];
 
         programs.noctalia.settings.include.files = [
@@ -51,6 +48,18 @@
         ];
 
         packages = with pkgs; [
+          # AI agents
+          llmPkgs.codex
+          llmPkgs.pi
+          llmPkgs.dsh
+          llmPkgs.antigravity-cli
+          llmPkgs.opencode2
+
+          bubblewrap
+          nodejs
+          pnpm
+          python3
+
           #anki-bin
           yt-dlp
           qbittorrent
@@ -58,6 +67,7 @@
           gh
 
           # dev
+          uv
           tmux
           zk
           zeal

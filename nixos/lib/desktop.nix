@@ -4,10 +4,12 @@
     let
       mainProgram = orig.meta.mainProgram or (lib.getName orig);
       desktopItems = pkgs.runCommand "${orig.name}-jailed-desktop-items" { } ''
-        # Some packages make share a symlink. Merge its contents explicitly
+        # Link through original paths so relative asset links still resolve
+        # when their targets live outside share (for example, browser icons).
         mkdir -p "$out/share"
         if [ -d "${orig}/share" ]; then
-          ${pkgs.lndir}/bin/lndir -silent "${orig}/share" "$out/share"
+          cp --recursive --symbolic-link --dereference --no-preserve=mode \
+            "${orig}/share/." "$out/share/"
         fi
 
         # Recreate applications so rewritten files cannot modify the originals.
@@ -31,8 +33,15 @@
       paths = [
         jailed
         desktopItems
-        orig
       ];
+      postBuild = ''
+        # Preserve the upstream command name as an alias to the jail.
+        # Only shared data comes from the original package, not its binaries.
+        if [ ! -e "$out/bin/${mainProgram}" ]; then
+          mkdir -p "$out/bin"
+          ln -s "${lib.getExe jailed}" "$out/bin/${mainProgram}"
+        fi
+      '';
       meta = orig.meta // {
         inherit mainProgram;
       };
