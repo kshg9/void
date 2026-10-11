@@ -25,8 +25,6 @@
         programs.fuse.userAllowOther = true;
         boot.tmp.cleanOnBoot = lib.mkDefault true;
 
-        boot.initrd.systemd.enable = true;
-
         environment.persistence = {
           "/persist/system" = {
             hideMounts = true;

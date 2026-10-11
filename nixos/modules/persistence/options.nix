@@ -44,7 +44,12 @@
         excludePaths = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           default = [ ];
-          description = "Paths, including their descendants, excluded from automatic persistence.";
+          description = ''
+            Paths and their descendants excluded from automatic persistence.
+            Excluding a child of a retained automatic entry is rejected, since a
+            parent bind mount would still persist that child. Explicit entries
+            in persistence.directories are not affected by these exclusions.
+          '';
         };
         discovered = lib.mkOption {
           type = lib.types.listOf lib.types.str;

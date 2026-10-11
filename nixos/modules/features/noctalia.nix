@@ -81,7 +81,7 @@
                       concave_edge_corners = false;
                       widget_spacing = 6;
                       capsule = true;
-                      capsule_fill = "surface_variant";
+                      capsule_fill = "surface_container";
                       capsule_radius = 8;
                       capsule_opacity = 0.9;
                       capsule_padding = 6;

@@ -5,8 +5,6 @@ direnv hook fish | source
 
 alias cd="z"
 set -g fish_greeting ""
-alias cat="bat"
-alias find="fd"
 alias ll="eza --long"
 alias lt="eza --tree"
 alias icat="kitten icat"
