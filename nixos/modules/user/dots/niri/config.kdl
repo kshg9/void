@@ -26,7 +26,7 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id="^google-chrome"
+    match app-id="^brave-origin"
     match app-id="firefox$"
     geometry-corner-radius 8 8 0 0
 }

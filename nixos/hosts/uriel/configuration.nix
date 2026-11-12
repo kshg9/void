@@ -36,6 +36,9 @@
         self.nixosModules.userKdj
         self.nixosModules.userYjh
 
+        # Neovim with its plugins, language servers and grammars from Nix.
+        self.nixosModules.neovim
+
         inputs.disko.nixosModules.disko
         self.diskoConfigurations.uriel
 
@@ -56,7 +59,7 @@
         usePercentageForPolicy = true;
         percentageLow = 20;
         percentageCritical = 10;
-        percentageAction = 5;
+        percentageAction = 3;
         criticalPowerAction = "Hibernate";
       };
 

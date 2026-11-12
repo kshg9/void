@@ -15,12 +15,12 @@
       mkJailedDesktop = self.lib.mkJailedDesktop pkgs pkgs.lib;
 
       vesktopPkg = pkgs.vesktop;
-      chromiumPkg = pkgs.chromium;
+      bravePkg = pkgs.brave-origin;
 
-      chromiumJailed = jail "chromium" chromiumPkg (
+      braveJailed = jail "brave" bravePkg (
         with jail.combinators;
         [
-          (persist-home "chromium")
+          (persist-home "brave")
           network
           gui
           (add-pkg-deps [ pkgs.wl-clipboard ])
@@ -58,7 +58,7 @@
     in
     {
       packages = [
-        (mkJailedDesktop chromiumJailed chromiumPkg)
+        (mkJailedDesktop braveJailed bravePkg)
         (mkJailedDesktop vesktopJailed vesktopPkg)
       ];
     };

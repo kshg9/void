@@ -76,7 +76,6 @@
           zk
           zeal
           jujutsu
-          neovim
           vscodium-fhs
 
           # CLI tools & utils
