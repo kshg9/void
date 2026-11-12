@@ -36,6 +36,9 @@
         self.nixosModules.userKdj
         self.nixosModules.userYjh
 
+        # Neovim with its plugins, language servers and grammars from Nix.
+        self.nixosModules.neovim
+
         inputs.disko.nixosModules.disko
         self.diskoConfigurations.uriel
 
